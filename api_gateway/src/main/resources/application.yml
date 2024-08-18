@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    gateway:
+      mvc:
+        routes:
+          - id: public-store-service
+            uri: http://192.168.160.1:9001
+            predicates:
+              - Path=/api/v1/public-store/
