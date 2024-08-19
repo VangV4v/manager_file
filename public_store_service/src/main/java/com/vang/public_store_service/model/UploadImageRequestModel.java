@@ -8,5 +8,5 @@ import java.io.Serializable;
 @Data
 public class UploadImageRequestModel implements Serializable {
 
-    MultipartFile fileData;
+    private MultipartFile fileData;
 }
