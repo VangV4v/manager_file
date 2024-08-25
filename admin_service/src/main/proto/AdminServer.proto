@@ -1,0 +1,18 @@
+syntax = "proto3";
+package com.vang;
+option java_multiple_files = true;
+option java_package = "com.vang.admin_service.grpc.generated";
+option java_outer_classname = "AdminServerGrpc";
+
+service AuthenticateAdmin {
+  rpc authenticate(AuthenticateAdminRequest) returns (AuthenticateAdminResponse);
+}
+
+message AuthenticateAdminRequest {
+  string username = 1;
+}
+
+message AuthenticateAdminResponse {
+  bool status = 1;
+  string password = 2;
+}
