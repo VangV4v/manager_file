@@ -42,7 +42,7 @@ public class AuthenticateServiceImpl implements AuthenticateService {
 
                 //Save temp data into Redis
                 redisTemplate.opsForValue().set(AuthAdminCommon.USERNAME_ADMIN_KEY, requestModel.getUsername());
-                redisTemplate.opsForValue().set(AuthAdminCommon.USERNAME_EXPIRATION_ADMIN_KEY, System.currentTimeMillis()+(1000 * 60 * 30));
+                redisTemplate.opsForValue().set(AuthAdminCommon.USERNAME_EXPIRATION_ADMIN_KEY, System.currentTimeMillis()+(1000 * 60 * 30)+"");
                 //end save
                 responseModel.setSuccess(Boolean.TRUE);
                 responseModel.setRole(AuthAdminCommon.ROLE_ADMIN);

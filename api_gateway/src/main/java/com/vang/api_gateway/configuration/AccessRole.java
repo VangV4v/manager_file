@@ -9,6 +9,7 @@ public class AccessRole {
         StringBuilder nonAccessRoles = new StringBuilder();
         nonAccessRoles.append("/api/v1/public-store/,");
         nonAccessRoles.append("/api/v1/auth/admin/,");
+        nonAccessRoles.append("/api/v1/auth/user/,");
         return Arrays.stream(nonAccessRoles.toString().split(",")).toArray(String[]::new);
     };
 
@@ -16,6 +17,8 @@ public class AccessRole {
 
         StringBuilder adminRoles = new StringBuilder();
         adminRoles.append("/api/v1/admins/,");
+        adminRoles.append("/api/v1/users/,");
         return Arrays.stream(adminRoles.toString().split(",")).toArray(String[]::new);
     }
+
 }

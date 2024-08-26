@@ -59,6 +59,7 @@ public class UserCommandServiceImpl implements UserCommandService {
         requestModel.setUserId(UserCommon.generateStringId());
         requestModel.setType(UserCommon.Numbers.ZERO);
         requestModel.setTotalFile(UserCommon.Numbers.ZERO);
+        requestModel.setStatus(UserCommon.Numbers.ONE);
         requestModel.setTotalFolder(UserCommon.Numbers.ZERO);
         requestModel.setPassword(UserCommon.convertPassword(requestModel.getPassword()));
         requestModel.setCreatedDate(UserCommon.getCurrentDate());
