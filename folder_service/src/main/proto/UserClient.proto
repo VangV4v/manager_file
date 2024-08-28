@@ -5,17 +5,7 @@ option java_outer_classname = "UserServerGrpc";
 option java_multiple_files = true;
 
 service AuthenticateUser {
-  rpc authenticate(AuthenticateUserRequest) returns (AuthenticateUserResponse);
   rpc getUserInfoByUsername(GetUserInfoByUsernameRequest) returns (GetUserInfoByUsernameResponse);
-}
-
-message AuthenticateUserRequest {
-  string username = 1;
-}
-
-message AuthenticateUserResponse {
-  bool status = 1;
-  string password = 2;
 }
 
 message GetUserInfoByUsernameRequest {

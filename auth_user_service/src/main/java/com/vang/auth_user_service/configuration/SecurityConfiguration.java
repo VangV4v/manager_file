@@ -1,6 +1,8 @@
 package com.vang.auth_user_service.configuration;
 
 import com.vang.auth_user_service.jwt.MyUserDetailsService;
+import net.devh.boot.grpc.server.security.authentication.BasicGrpcAuthenticationReader;
+import net.devh.boot.grpc.server.security.authentication.GrpcAuthenticationReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -50,6 +52,12 @@ public class SecurityConfiguration {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
 
         return configuration.getAuthenticationManager();
+    }
+
+    @Bean
+    public GrpcAuthenticationReader authenticationReader() {
+
+        return new BasicGrpcAuthenticationReader();
     }
 
 }

@@ -23,10 +23,10 @@ public class AuthenticateServiceImpl implements AuthenticateService {
 
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
 
     @Autowired
-    public AuthenticateServiceImpl(JwtService jwtService, AuthenticationManager authenticationManager, RedisTemplate<String, Object> redisTemplate) {
+    public AuthenticateServiceImpl(JwtService jwtService, AuthenticationManager authenticationManager, RedisTemplate<String, String> redisTemplate) {
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
         this.redisTemplate = redisTemplate;

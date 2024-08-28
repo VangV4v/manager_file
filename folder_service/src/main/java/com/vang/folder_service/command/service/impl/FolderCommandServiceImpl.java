@@ -5,6 +5,7 @@ import com.vang.folder_service.command.model.FolderRequestModel;
 import com.vang.folder_service.command.model.ResponseModel;
 import com.vang.folder_service.command.service.FolderCommandService;
 import com.vang.folder_service.data.FolderRepository;
+import com.vang.folder_service.grpc.grpc.AuthUserClient;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +16,13 @@ public class FolderCommandServiceImpl implements FolderCommandService {
 
     private final CommandGateway commandGateway;
     private final FolderRepository folderRepository;
+    private final AuthUserClient authUserClient;
 
     @Autowired
-    public FolderCommandServiceImpl(CommandGateway commandGateway, FolderRepository folderRepository) {
+    public FolderCommandServiceImpl(CommandGateway commandGateway, FolderRepository folderRepository, AuthUserClient authUserClient) {
         this.commandGateway = commandGateway;
         this.folderRepository = folderRepository;
+        this.authUserClient = authUserClient;
     }
 
     @Override
@@ -27,7 +30,11 @@ public class FolderCommandServiceImpl implements FolderCommandService {
 
         CreateFolderCommand createFolderCommand = new CreateFolderCommand();
         ResponseModel responseModel = new ResponseModel();
+        //get base user data
+        String authUserInfo = authUserClient.getAuthUserInformation();
+//        String userData =
         //check data exist
+
         return null;
     }
 

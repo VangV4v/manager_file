@@ -1,8 +1,8 @@
 syntax = "proto3";
 package com.vang;
-option java_package = "com.vang.auth_user_service.grpc.generated";
+option java_package = "com.vang.folder_service.grpc.generated";
 option java_multiple_files = true;
-option java_outer_classname = "AuthUserServer";
+option java_outer_classname = "AuthUserClient";
 
 service GetAuthUserInformation {
   rpc getAuthUserInfo(GetAuthUserInformationRequest) returns (GetAuthUserInformationResponse);

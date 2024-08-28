@@ -8,6 +8,8 @@ import java.util.Arrays;
 
 public class FolderCommon {
 
+    public static final String IP = "192.168.160.1";
+    public static final int GRPC_AUTH_USER_PORT = 7002;
     //private variable
     private static final String BASE_ID = "FOLDER_";
 
