@@ -1,10 +1,10 @@
 syntax = "proto3";
 package com.vang;
-option java_package = "com.vang.user_service.grpc.generated";
-option java_outer_classname = "UserServerGrpc";
+option java_package = "com.vang.folder_service.grpc.generated";
 option java_multiple_files = true;
+option java_outer_classname = "UserClientGrpc";
 
-service AuthenticateUser {
+service GetUserInfoByUsername {
   rpc getUserInfoByUsername(GetUserInfoByUsernameRequest) returns (GetUserInfoByUsernameResponse);
 }
 

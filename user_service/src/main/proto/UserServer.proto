@@ -6,6 +6,9 @@ option java_multiple_files = true;
 
 service AuthenticateUser {
   rpc authenticate(AuthenticateUserRequest) returns (AuthenticateUserResponse);
+}
+
+service GetUserInfoByUsername {
   rpc getUserInfoByUsername(GetUserInfoByUsernameRequest) returns (GetUserInfoByUsernameResponse);
 }
 
