@@ -26,4 +26,8 @@ public class Folders {
     private String userInformation;
     @Column(name = "status")
     private int status;
+    @Column(name = "createddate")
+    private String createdDate;
+    @Column(name = "lastmodified")
+    private String lastModified;
 }

@@ -24,4 +24,19 @@ public class FolderEventsHandler {
         BeanUtils.copyProperties(event, folders);
         folderRepository.save(folders);
     }
+
+    @EventHandler
+    public void handle(FolderUpdatedEvent event) {
+
+        Folders folders = new Folders();
+        BeanUtils.copyProperties(event, folders);
+        folderRepository.save(folders);
+    }
+
+    @EventHandler
+    public void handle(FolderDeletedEvent event) {
+
+        folderRepository.deleteById(event.getFolderId());
+    }
+
 }

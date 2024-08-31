@@ -2,6 +2,8 @@ package com.vang.folder_service.command.service.impl;
 
 import com.google.gson.Gson;
 import com.vang.folder_service.command.command.CreateFolderCommand;
+import com.vang.folder_service.command.command.DeleteFolderCommand;
+import com.vang.folder_service.command.command.UpdateFolderCommand;
 import com.vang.folder_service.command.model.FolderRequestModel;
 import com.vang.folder_service.command.model.ResponseModel;
 import com.vang.folder_service.command.service.FolderCommandService;
@@ -48,13 +50,14 @@ public class FolderCommandServiceImpl implements FolderCommandService {
         long checkExistFolder = folderRepository.countByFolderName(requestModel.getFolderName(), userGrpcModel.getUserId());
         if(checkExistFolder > 0) {
 
-            requestModel.setFolderName(requestModel.getFolderName()+"_1");
+            requestModel.setFolderName(requestModel.getFolderName()+"_"+checkExistFolder);
         }
         //end check data exist
         requestModel.setUserId(userGrpcModel.getUserId());
         requestModel.setUserInformation(userData);
         requestModel.setFolderId(FolderCommon.generateStringId());
         requestModel.setStatus(1);
+        requestModel.setCreatedDate(FolderCommon.getCurrentDate());
         BeanUtils.copyProperties(requestModel, createFolderCommand);
 
         String folderResponseCommand = commandGateway.sendAndWait(createFolderCommand);
@@ -65,20 +68,58 @@ public class FolderCommandServiceImpl implements FolderCommandService {
             return new ResponseEntity<>(responseModel, HttpStatus.BAD_REQUEST);
         } else {
 
-            responseModel.setSuccess(Boolean.FALSE);
-            responseModel.setMessage("Create folder successful");
+            responseModel.setSuccess(Boolean.TRUE);
+            responseModel.setMessage(FolderCommon.SUCCESS_ADD);
             return new ResponseEntity<>(responseModel, HttpStatus.OK);
         }
     }
 
     @Override
     public ResponseEntity<ResponseModel> updateFolder(FolderRequestModel requestModel) {
-        return null;
+
+        UpdateFolderCommand updateFolderCommand = new UpdateFolderCommand();
+        ResponseModel responseModel = new ResponseModel();
+        //check data exist
+        long checkExistFolder = folderRepository.countByFolderName(requestModel.getFolderName(), requestModel.getUserId());
+        if(checkExistFolder > 0) {
+
+            requestModel.setFolderName(requestModel.getFolderName()+"_"+checkExistFolder);
+        }
+        //end check data
+        requestModel.setLastModified(FolderCommon.getCurrentDate());
+        BeanUtils.copyProperties(requestModel, updateFolderCommand);
+        String responseCommand = commandGateway.sendAndWait(updateFolderCommand);
+
+        if(StringUtils.isEmpty(responseCommand)) {
+
+            responseModel.setSuccess(Boolean.FALSE);
+            return new ResponseEntity<>(responseModel, HttpStatus.BAD_REQUEST);
+        } else {
+
+            responseModel.setSuccess(Boolean.TRUE);
+            responseModel.setMessage(FolderCommon.SUCCESS_UPDATE);
+            return new ResponseEntity<>(responseModel, HttpStatus.OK);
+        }
     }
 
     @Override
     public ResponseEntity<ResponseModel> deleteFolder(FolderRequestModel requestModel) {
-        return null;
+
+        DeleteFolderCommand deleteFolderCommand = new DeleteFolderCommand();
+        ResponseModel responseModel = new ResponseModel();
+        BeanUtils.copyProperties(requestModel, deleteFolderCommand);
+        String responseCommand = commandGateway.sendAndWait(deleteFolderCommand);
+
+        if(StringUtils.isEmpty(responseCommand)) {
+
+            responseModel.setSuccess(Boolean.FALSE);
+            return new ResponseEntity<>(responseModel, HttpStatus.BAD_REQUEST);
+        } else {
+
+            responseModel.setSuccess(Boolean.TRUE);
+            responseModel.setMessage(FolderCommon.SUCCESS_DELETE);
+            return new ResponseEntity<>(responseModel, HttpStatus.OK);
+        }
     }
 
 }

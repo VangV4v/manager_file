@@ -15,4 +15,6 @@ public class UpdateFolderCommand {
     private String userId;
     private String userInformation;
     private int status;
+    private String createdDate;
+    private String lastModified;
 }

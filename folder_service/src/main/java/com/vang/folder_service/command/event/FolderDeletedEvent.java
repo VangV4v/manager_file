@@ -7,10 +7,4 @@ public class FolderDeletedEvent {
 
     private String aggregateId;
     private String folderId;
-    private String folderName;
-    private String folderPath;
-    private int fileInFolder;
-    private String userId;
-    private String userInformation;
-    private int status;
 }

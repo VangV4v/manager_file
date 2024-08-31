@@ -1,7 +1,11 @@
 package com.vang.folder_service.command.aggregate;
 
 import com.vang.folder_service.command.command.CreateFolderCommand;
+import com.vang.folder_service.command.command.DeleteFolderCommand;
+import com.vang.folder_service.command.command.UpdateFolderCommand;
 import com.vang.folder_service.command.event.FolderCreatedEvent;
+import com.vang.folder_service.command.event.FolderDeletedEvent;
+import com.vang.folder_service.command.event.FolderUpdatedEvent;
 import lombok.Data;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -23,13 +27,32 @@ public class FolderAggregate {
     private String userId;
     private String userInformation;
     private int status;
+    private String createdDate;
+    private String lastModified;
 
-    public FolderAggregate() {}
+    public FolderAggregate() {
+    }
 
     @CommandHandler
     public FolderAggregate(CreateFolderCommand command) {
 
         FolderCreatedEvent event = new FolderCreatedEvent();
+        BeanUtils.copyProperties(command, event);
+        AggregateLifecycle.apply(event);
+    }
+
+    @CommandHandler
+    public FolderAggregate(UpdateFolderCommand command) {
+
+        FolderUpdatedEvent event = new FolderUpdatedEvent();
+        BeanUtils.copyProperties(command, event);
+        AggregateLifecycle.apply(event);
+    }
+
+    @CommandHandler
+    public FolderAggregate(DeleteFolderCommand command) {
+
+        FolderDeletedEvent event = new FolderDeletedEvent();
         BeanUtils.copyProperties(command, event);
         AggregateLifecycle.apply(event);
     }
@@ -45,6 +68,29 @@ public class FolderAggregate {
         this.userId = event.getUserId();
         this.userInformation = event.getUserInformation();
         this.status = event.getStatus();
+        this.createdDate = event.getCreatedDate();
+        this.lastModified = event.getLastModified();
     }
 
+    @EventSourcingHandler
+    public void handle(FolderUpdatedEvent event) {
+
+        this.aggregateId = event.getAggregateId();
+        this.folderId = event.getFolderId();
+        this.folderName = event.getFolderName();
+        this.folderPath = event.getFolderPath();
+        this.fileInFolder = event.getFileInFolder();
+        this.userId = event.getUserId();
+        this.userInformation = event.getUserInformation();
+        this.status = event.getStatus();
+        this.createdDate = event.getCreatedDate();
+        this.lastModified = event.getLastModified();
+    }
+
+    @EventSourcingHandler
+    public void handle(FolderDeletedEvent event) {
+
+        this.aggregateId = event.getAggregateId();
+        this.folderId = event.getFolderId();
+    }
 }

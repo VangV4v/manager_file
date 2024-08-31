@@ -13,4 +13,6 @@ public class FolderRequestModel implements Serializable {
     private String userId;
     private String userInformation;
     private int status;
+    private String createdDate;
+    private String lastModified;
 }

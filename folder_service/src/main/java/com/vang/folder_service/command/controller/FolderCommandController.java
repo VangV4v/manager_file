@@ -5,10 +5,7 @@ import com.vang.folder_service.command.model.ResponseModel;
 import com.vang.folder_service.command.service.FolderCommandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/folders/")
@@ -26,4 +23,17 @@ public class FolderCommandController {
 
         return folderCommandService.addFolder(requestModel);
     }
+
+    @PutMapping
+    public ResponseEntity<ResponseModel> updateFolder(@RequestBody FolderRequestModel requestModel) {
+
+        return folderCommandService.updateFolder(requestModel);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<ResponseModel> deleteFolder(@RequestBody FolderRequestModel requestModel) {
+
+        return folderCommandService.deleteFolder(requestModel);
+    }
+
 }
