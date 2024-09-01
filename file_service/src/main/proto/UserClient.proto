@@ -1,0 +1,18 @@
+syntax = "proto3";
+package com.vang;
+option java_package = "com.vang.file_service.grpc.generated";
+option java_multiple_files = true;
+option java_outer_classname = "UserClientGrpc";
+
+service GetUserInfoByUsername {
+  rpc getUserInfoByUsername(GetUserInfoByUsernameRequest) returns (GetUserInfoByUsernameResponse);
+}
+
+message GetUserInfoByUsernameRequest {
+  string username = 1;
+}
+
+message GetUserInfoByUsernameResponse {
+  bool status = 1;
+  string userResponse = 2;
+}

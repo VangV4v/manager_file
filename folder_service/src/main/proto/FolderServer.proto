@@ -1,0 +1,31 @@
+syntax = "proto3";
+package com.vang;
+option java_package = "com.vang.folder_service.grpc.generated";
+option java_multiple_files = true;
+option java_outer_classname = "FolderSeverGrpc";
+
+service FindFolderById {
+  rpc getData(FindFolderByIdRequest) returns (FindFolderByIdReply);
+}
+
+service UpdateCountOfFile {
+  rpc updateCount(UpdateCountOfFileRequest) returns (UpdateCountOfFileReply);
+}
+
+message FindFolderByIdRequest {
+  string folderId = 1;
+}
+
+message FindFolderByIdReply {
+  bool status = 1;
+  string responseJson = 2;
+}
+
+message UpdateCountOfFileRequest {
+  string folderId = 1;
+  int32 type = 2;
+}
+
+message UpdateCountOfFileReply {
+  int32 rowChange = 1;
+}
