@@ -92,5 +92,6 @@ public class FolderAggregate {
 
         this.aggregateId = event.getAggregateId();
         this.folderId = event.getFolderId();
+        this.userId = event.getUserId();
     }
 }

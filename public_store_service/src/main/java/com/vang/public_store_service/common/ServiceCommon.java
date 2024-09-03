@@ -5,10 +5,9 @@ import java.time.format.DateTimeFormatter;
 
 public class ServiceCommon {
     public static final String BUCKET = "publicstore";
-    public static final String END_POINT = "http://192.168.133.194:9000";
+    public static final String END_POINT = "http://192.168.160.1:9000";
     public static final String USERNAME = "minioadmin";
     public static final String PASSWORD = "minioadmin";
-
 
     public static String getCurrentDate() {
 

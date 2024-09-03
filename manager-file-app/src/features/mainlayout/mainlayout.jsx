@@ -1,17 +1,16 @@
-import BodyPage from "./body/body";
+import { Box, Container, Typography } from "@mui/material";
 import HeaderPage from "./header/header";
-import { Layout } from "antd";
-import { Content } from "antd/es/layout/layout";
+import { Route, Routes } from "react-router-dom";
+import PublicStorePage from "../public_store/publicstore";
+import LoginPage from "../login/login";
 
 function MainLayoutPage() {
     return (
         <>
-            <Layout>
-                <HeaderPage></HeaderPage>
-                <Content>
-                    <BodyPage></BodyPage>
-                </Content>
-            </Layout>
+            <HeaderPage></HeaderPage>
+            <Routes>
+                <Route path="/login" element={<LoginPage />}></Route>
+            </Routes>
         </>
     );
 }

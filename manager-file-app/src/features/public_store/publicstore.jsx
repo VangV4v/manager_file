@@ -61,7 +61,7 @@ function PublicStorePage() {
                                 tabIndex={-1}
                             >
                                 <Image width={150} height={150} preview={false} src={uploadLogo} />
-                                <VisuallyHiddenInput type="file" {...register("fileData")} name="fileData" onChange={(e) => { setFileName(e.target.files.item(0).name); }} />
+                                <VisuallyHiddenInput type="file" {...register("fileData")} name="fileData" onClick={() => { setDefaultText('') }} onChangeCapture={(e) => { setFileName(e.currentTarget.value) }} />
                             </Button>
                         </Box>
                         <Box>

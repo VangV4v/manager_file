@@ -3,9 +3,7 @@ import MainLayoutPage from './features/mainlayout/mainlayout'
 
 function App() {
   return (
-    <>
-      <MainLayoutPage></MainLayoutPage>
-    </>
+    <MainLayoutPage></MainLayoutPage>
   )
 }
 

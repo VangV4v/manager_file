@@ -1,0 +1,25 @@
+.b-color {
+    &-white {
+        background-color: white;
+    }
+}
+
+.inp {
+    height: 40px;
+    &-rd {
+        border-radius: 50px;
+    }
+}
+
+.login {
+
+    &-Btn {
+        color: white;
+        background-image: linear-gradient(to right, rgb(10, 214, 241), rgb(221, 32, 205));
+    }
+    &-backGr {
+        width: auto;
+        min-height: 80vh;
+        background-image: linear-gradient(to right, rgb(10, 214, 241), rgb(221, 32, 205));
+    }
+}

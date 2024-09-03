@@ -10,7 +10,7 @@ public class FileCommon {
 
     //Minio
     public static final String BUCKET = "userstore";
-    public static final String END_POINT = "http://127.0.0.1:9000";
+    public static final String END_POINT = "http://192.168.160.1:9000";
     public static final String USERNAME = "minioadmin";
     public static final String PASSWORD = "minioadmin";
     //end Minio

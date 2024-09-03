@@ -1,9 +1,7 @@
 package com.vang.folder_service.configuration;
 
 import com.vang.folder_service.common.FolderCommon;
-import com.vang.folder_service.grpc.generated.GetAuthUserInformationGrpc;
-import com.vang.folder_service.grpc.generated.GetUserInfoByUsernameGrpc;
-import com.vang.folder_service.grpc.generated.UserClientGrpc;
+import com.vang.folder_service.grpc.generated.*;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +22,20 @@ public class GrpcConfiguration {
 
         ManagedChannel channel = ManagedChannelBuilder.forAddress(FolderCommon.IP, FolderCommon.GRPC_USER_PORT).usePlaintext().build();
         return GetUserInfoByUsernameGrpc.newBlockingStub(channel);
+    }
+
+    @Bean
+    public UpdateStatusFilesGrpc.UpdateStatusFilesBlockingStub updateStatusFilesBlockingStub() {
+
+        ManagedChannel channel = ManagedChannelBuilder.forAddress(FolderCommon.IP, FolderCommon.GRPC_FILE_PORT).usePlaintext().build();
+        return UpdateStatusFilesGrpc.newBlockingStub(channel);
+    }
+
+    @Bean
+    public DeleteFilesByFolderIdGrpc.DeleteFilesByFolderIdBlockingStub deleteFilesByFolderIdBlockingStub() {
+
+        ManagedChannel channel = ManagedChannelBuilder.forAddress(FolderCommon.IP, FolderCommon.GRPC_FILE_PORT).usePlaintext().build();
+        return DeleteFilesByFolderIdGrpc.newBlockingStub(channel);
     }
 
 }
