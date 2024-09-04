@@ -33,6 +33,8 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests(auth -> {
 
             auth.requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/auth/user/")).permitAll()
+                    .requestMatchers(AntPathRequestMatcher.antMatcher("/swagger-ui/**")).permitAll()
+                    .requestMatchers(AntPathRequestMatcher.antMatcher("/api-docs")).permitAll()
                     .anyRequest().authenticated();
         });
         http.authenticationProvider(authenticationProvider());

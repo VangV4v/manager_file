@@ -23,3 +23,12 @@
         background-image: linear-gradient(to right, rgb(10, 214, 241), rgb(221, 32, 205));
     }
 }
+
+.space {
+    &-ml1 {
+        margin-left: 5px;
+    }
+    &-mt1 {
+        margin-top: 5px;
+    }
+}

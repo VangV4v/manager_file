@@ -4,10 +4,19 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import LockIcon from '@mui/icons-material/Lock';
 import GoogleIcon from '@mui/icons-material/Google';
 import FacebookIcon from '@mui/icons-material/Facebook';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup";
+
+const schema = yup.object({
+    username: yup.string().required("Username is not empty"),
+    password: yup.string().required("Password is not empty"),
+}).required();
 
 function LoginPage() {
 
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        resolver: yupResolver(schema)
+    });
 
     const handleSubmitForm = (data) => {
 
@@ -27,12 +36,14 @@ function LoginPage() {
                         <CardContent>
                             <Box>
                                 <Stack spacing={2} className="b-color-white">
-                                    <TextField label="Username" variant="standard" InputProps={
-                                        { startAdornment: <PersonOutlineIcon /> }
-                                    } />
-                                    <TextField label="Password" type="password" variant="standard" InputProps={
-                                        { startAdornment: <LockIcon /> }
-                                    } />
+                                    <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                                        <PersonOutlineIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+                                        <TextField id="input-with-sx" error={!!errors.username} helperText={errors.username?.message} {...register("username")} fullWidth label="Username" variant="standard" />
+                                    </Box>
+                                    <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+                                        <LockIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+                                        <TextField id="input-with-sx" error={!!errors.password} helperText={errors.password?.message} {...register("password")} fullWidth label="Password" variant="standard" />
+                                    </Box>
                                     <Typography sx={{ fontSize: "15px" }} align="right">Forgot password</Typography>
                                     <button type="submit" style={{ borderRadius: '200px', height: '40px' }} className="login-Btn">LOGIN</button>
                                     <Button variant="contained" type="button" color="error" endIcon={<GoogleIcon />}>Google</Button>
