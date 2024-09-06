@@ -18,7 +18,7 @@ export const authenticateUser = createAsyncThunk("auth/authUser",
 const AuthUserSlice = createSlice({
     name: "userAuthenticate",
     initialState: {
-        authUser: {
+        authUser: JSON.parse(localStorage.getItem("authUserInformation")) || {
             authenticated: false,
             jwt: "",
             expiration: 0,

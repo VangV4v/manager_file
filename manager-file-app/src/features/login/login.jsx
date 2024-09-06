@@ -6,6 +6,8 @@ import GoogleIcon from '@mui/icons-material/Google';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
+import { useDispatch } from "react-redux";
+import { authenticateUser } from "../../slice/auth-user-slice";
 
 const schema = yup.object({
     username: yup.string().required("Username is not empty"),
@@ -14,13 +16,22 @@ const schema = yup.object({
 
 function LoginPage() {
 
+    const dispatch = useDispatch();
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema)
     });
 
     const handleSubmitForm = (data) => {
 
-        console.log(data);
+        const action = authenticateUser(data);
+        dispatch(action)
+            .unwrap()
+            .then((response) => {
+                localStorage.setItem('authUserInformation', JSON.stringify(response));
+            })
+            .catch((error) => {
+                console.log(error);
+            })
     }
 
     return (
@@ -42,7 +53,7 @@ function LoginPage() {
                                     </Box>
                                     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                         <LockIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-                                        <TextField id="input-with-sx" error={!!errors.password} helperText={errors.password?.message} {...register("password")} fullWidth label="Password" variant="standard" />
+                                        <TextField id="input-with-sx" type="password" error={!!errors.password} helperText={errors.password?.message} {...register("password")} fullWidth label="Password" variant="standard" />
                                     </Box>
                                     <Typography sx={{ fontSize: "15px" }} align="right">Forgot password</Typography>
                                     <button type="submit" style={{ borderRadius: '200px', height: '40px' }} className="login-Btn">LOGIN</button>
