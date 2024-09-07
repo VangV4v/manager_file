@@ -14,8 +14,6 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 
 const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -34,6 +32,14 @@ function ResponsiveAppBar() {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+
+
+    const logoutHandle = () => {
+
+        setAnchorElUser(null);
+        localStorage.removeItem("authUserInformation");
+        window.location.href = "/login";
+    }
 
     return (
         <AppBar position='relative'>
@@ -144,11 +150,9 @@ function ResponsiveAppBar() {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
-                                </MenuItem>
-                            ))}
+                            <MenuItem onClick={() => logoutHandle()} sx={{ height: '20px' }}>
+                                <Typography sx={{ textAlign: 'center' }}>Logout</Typography>
+                            </MenuItem>
                         </Menu>
                     </Box>
                 </Toolbar>

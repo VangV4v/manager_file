@@ -10,6 +10,7 @@ public class AccessRole {
         nonAccessRoles.append("/api/v1/public-store/,");
         nonAccessRoles.append("/api/v1/auth/admin/,");
         nonAccessRoles.append("/api/v1/auth/user/,");
+        nonAccessRoles.append("/oauth2/authorization/google,");
         return Arrays.stream(nonAccessRoles.toString().split(",")).toArray(String[]::new);
     };
 

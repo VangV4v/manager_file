@@ -56,7 +56,7 @@ public class AuthenticateServiceImpl implements AuthenticateService {
 
             authResponseModel.setSuccess(Boolean.FALSE);
             authResponseModel.setMessage(AuthUserCommon.MES_LOGIN_FAIL);
-            ResponseEntity<AuthResponseModel> response = new ResponseEntity<>(authResponseModel, HttpStatus.OK);
+            ResponseEntity<AuthResponseModel> response = new ResponseEntity<>(authResponseModel, HttpStatus.UNAUTHORIZED);
             return CompletableFuture.completedFuture(response);
         }
         return null;

@@ -16,6 +16,11 @@ spring:
             uri: http://192.168.160.1:6002
             predicates:
               - Path=/api/v1/auth/user/
+          #OAuth2
+          - id: oauth-service
+            uri: http://192.168.160.1:6003
+            predicates:
+              - Path=/**
           #Admin Service
           - id: admin-service
             uri: http://192.168.160.1:9002

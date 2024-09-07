@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardContent, IconButton, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, CircularProgress, IconButton, Stack, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import LockIcon from '@mui/icons-material/Lock';
@@ -8,6 +8,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { useDispatch } from "react-redux";
 import { authenticateUser } from "../../slice/auth-user-slice";
+import { useState } from "react";
+import { redirect, useNavigate } from "react-router-dom";
 
 const schema = yup.object({
     username: yup.string().required("Username is not empty"),
@@ -20,18 +22,27 @@ function LoginPage() {
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema)
     });
+    const [isShowMes, setShowMes] = useState(false);
+    const [isShowLoading, setShowLoading] = useState(false);
+    const url = "http://localhost:6003/oauth2/authorization/google";
 
     const handleSubmitForm = (data) => {
 
-        const action = authenticateUser(data);
-        dispatch(action)
-            .unwrap()
-            .then((response) => {
-                localStorage.setItem('authUserInformation', JSON.stringify(response));
-            })
-            .catch((error) => {
-                console.log(error);
-            })
+        setShowLoading(true);
+        setTimeout(() => {
+            setShowLoading(false);
+            const action = authenticateUser(data);
+            dispatch(action)
+                .unwrap()
+                .then((response) => {
+                    localStorage.setItem('authUserInformation', JSON.stringify(response));
+                    window.location.href = "/home";
+                })
+                .catch((error) => {
+                    console.log(error);
+                    setShowMes(true);
+                });
+        }, 3000);
     }
 
     return (
@@ -46,6 +57,12 @@ function LoginPage() {
                         </CardContent>
                         <CardContent>
                             <Box>
+                                {
+                                    isShowLoading &&
+                                    <Box sx={{ display: 'contents' }}>
+                                        <CircularProgress />
+                                    </Box>
+                                }
                                 <Stack spacing={2} className="b-color-white">
                                     <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
                                         <PersonOutlineIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
@@ -55,9 +72,12 @@ function LoginPage() {
                                         <LockIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
                                         <TextField id="input-with-sx" type="password" error={!!errors.password} helperText={errors.password?.message} {...register("password")} fullWidth label="Password" variant="standard" />
                                     </Box>
+                                    {
+                                        isShowMes && <Typography sx={{ fontSize: "15px", color: 'red' }} align="center">Invalid username or password !</Typography>
+                                    }
                                     <Typography sx={{ fontSize: "15px" }} align="right">Forgot password</Typography>
                                     <button type="submit" style={{ borderRadius: '200px', height: '40px' }} className="login-Btn">LOGIN</button>
-                                    <Button variant="contained" type="button" color="error" endIcon={<GoogleIcon />}>Google</Button>
+                                    <Button variant="contained" type="button" color="error" endIcon={<GoogleIcon />} href={url}>Google</Button>
                                     <Button variant="contained" type="button" endIcon={<FacebookIcon />}>Facebook</Button>
                                 </Stack>
                             </Box>
