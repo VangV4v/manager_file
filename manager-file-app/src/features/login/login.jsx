@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { authenticateUser } from "../../slice/auth-user-slice";
 import { useState } from "react";
 import { redirect, useNavigate } from "react-router-dom";
+import { GOOGLE_OAUTH2 } from "../../contants/contant";
 
 const schema = yup.object({
     username: yup.string().required("Username is not empty"),
@@ -24,7 +25,6 @@ function LoginPage() {
     });
     const [isShowMes, setShowMes] = useState(false);
     const [isShowLoading, setShowLoading] = useState(false);
-    const url = "http://localhost:6003/oauth2/authorization/google";
 
     const handleSubmitForm = (data) => {
 
@@ -77,7 +77,7 @@ function LoginPage() {
                                     }
                                     <Typography sx={{ fontSize: "15px" }} align="right">Forgot password</Typography>
                                     <button type="submit" style={{ borderRadius: '200px', height: '40px' }} className="login-Btn">LOGIN</button>
-                                    <Button variant="contained" type="button" color="error" endIcon={<GoogleIcon />} href={url}>Google</Button>
+                                    <Button variant="contained" type="button" color="error" endIcon={<GoogleIcon />} href={GOOGLE_OAUTH2}>Google</Button>
                                     <Button variant="contained" type="button" endIcon={<FacebookIcon />}>Facebook</Button>
                                 </Stack>
                             </Box>

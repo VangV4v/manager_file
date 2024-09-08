@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import publicStoreAPI from "../../api/publicstore";
-import { Box, Button, Card, CardActions, CardContent, IconButton, styled, TextField } from "@mui/material";
+import { Box, Button, Card, CardActions, CardContent, Container, IconButton, styled, TextField } from "@mui/material";
 import uploadLogo from '../../assets/images/logos/upload.png';
 import { Image } from "antd";
 import { useState } from "react";
@@ -43,38 +43,38 @@ function PublicStorePage() {
 
     return (
         <>
-            <Card>
-                <CardContent>
-                    <TextField placeholder="Image URL" value={defaultText} disabled fullWidth size="small" InputProps={{
-                        endAdornment: <IconButton onClick={handleDowloadImage}><DownloadIcon /></IconButton>
-                    }} />
-                </CardContent>
-            </Card>
-            <Card sx={{ width: '700px', height: '300px' }}>
-                <form id="publicStore" encType='multipart/form-data' onSubmit={handleSubmit(getData)}>
+            <Container sx={{ pt: 3 }}>
+                <Card>
                     <CardContent>
-                        <Box>
-                            <Button
-                                component="label"
-                                role={undefined}
-                                variant="text"
-                                tabIndex={-1}
-                            >
-                                <Image width={150} height={150} preview={false} src={uploadLogo} />
-                                <VisuallyHiddenInput type="file" {...register("fileData")} name="fileData" onClick={() => { setDefaultText('') }} onChangeCapture={(e) => { setFileName(e.currentTarget.value) }} />
-                            </Button>
-                        </Box>
-                        <Box>
-                            {fileName}
-                        </Box>
+                        <TextField placeholder="Image URL" value={defaultText} disabled fullWidth size="small" InputProps={{
+                            endAdornment: <IconButton onClick={handleDowloadImage}><DownloadIcon /></IconButton>
+                        }} />
                     </CardContent>
-                    <CardActions>
-                        <Box flexGrow={1}>
-                            <Button variant="contained" type="submit" startIcon={<CloudUploadIcon />}>Upload</Button>
-                        </Box>
-                    </CardActions>
-                </form>
-            </Card>
+                    <form id="publicStore" encType='multipart/form-data' onSubmit={handleSubmit(getData)}>
+                        <CardContent>
+                            <Box>
+                                <center>
+                                    <Button
+                                        component="label"
+                                        role={undefined}
+                                        variant="text"
+                                        tabIndex={-1}
+                                    >
+                                        <Image width={150} height={150} preview={false} src={uploadLogo} />
+                                        <VisuallyHiddenInput type="file" {...register("fileData")} name="fileData" onClick={() => { setDefaultText('') }} onChangeCapture={(e) => { setFileName(e.currentTarget.value) }} />
+                                    </Button>
+                                    <Box>
+                                        {fileName}
+                                    </Box>
+                                    <Box sx={{ pt: 5 }}>
+                                        <Button variant="contained" type="submit" startIcon={<CloudUploadIcon />}>Upload</Button>
+                                    </Box>
+                                </center>
+                            </Box>
+                        </CardContent>
+                    </form>
+                </Card>
+            </Container>
         </>
     );
 }

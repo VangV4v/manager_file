@@ -18,11 +18,16 @@ export const authenticateUser = createAsyncThunk("auth/authUser",
 const AuthUserSlice = createSlice({
     name: "userAuthenticate",
     initialState: {
-        authUser: JSON.parse(localStorage.getItem("authUserInformation")) || {
+        authUser: !localStorage.getItem("authUserInformation") ? {
             authenticated: false,
             jwt: "",
             expiration: 0,
             role: ""
+        } : {
+            authenticated: JSON.parse(localStorage.getItem("authUserInformation")).authenticated,
+            jwt: JSON.parse(localStorage.getItem("authUserInformation")).jwt,
+            expiration: JSON.parse(localStorage.getItem("authUserInformation")).expiration,
+            role: JSON.parse(localStorage.getItem("authUserInformation")).role
         }
     },
     reducers: {},

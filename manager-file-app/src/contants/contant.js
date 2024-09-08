@@ -1,0 +1,1 @@
+export const GOOGLE_OAUTH2 = "http://localhost:6003/oauth2/authorization/google";

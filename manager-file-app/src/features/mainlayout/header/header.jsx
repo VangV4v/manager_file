@@ -12,12 +12,13 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import { useSelector } from 'react-redux';
+import settingImage from '../../../assets/images/logos/setting.png';
 
-const pages = ['Products', 'Pricing', 'Blog'];
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
-
+    const isValidate = useSelector(state => state.authUserReducer.authUser.authenticated);
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -91,11 +92,9 @@ function ResponsiveAppBar() {
                             onClose={handleCloseNavMenu}
                             sx={{ display: { xs: 'block', md: 'none' } }}
                         >
-                            {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
-                                </MenuItem>
-                            ))}
+                            <MenuItem onClick={handleCloseNavMenu}>
+                                <Typography sx={{ textAlign: 'center' }}>HOME</Typography>
+                            </MenuItem>
                         </Menu>
                     </Box>
                     <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -118,43 +117,62 @@ function ResponsiveAppBar() {
                         LOGO
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pages.map((page) => (
+                        {isValidate &&
                             <Button
-                                key={page}
                                 onClick={handleCloseNavMenu}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
-                                {page}
+                                HOME
                             </Button>
-                        ))}
+                        }
+                        {!isValidate &&
+                            <>
+                                <Button
+                                    onClick={handleCloseNavMenu}
+                                    href='/public-store'
+                                    sx={{ my: 2, color: 'white', display: 'block' }}
+                                >
+                                    UPLOAD
+                                </Button>
+                                <Button
+                                    onClick={handleCloseNavMenu}
+                                    href='/login'
+                                    sx={{ my: 2, color: 'white', display: 'block' }}
+                                >
+                                    LOGIN
+                                </Button>
+                            </>
+                        }
                     </Box>
-                    <Box sx={{ flexGrow: 0 }}>
-                        <Tooltip title="Open settings">
-                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                            </IconButton>
-                        </Tooltip>
-                        <Menu
-                            sx={{ mt: '45px' }}
-                            id="menu-appbar"
-                            anchorEl={anchorElUser}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={Boolean(anchorElUser)}
-                            onClose={handleCloseUserMenu}
-                        >
-                            <MenuItem onClick={() => logoutHandle()} sx={{ height: '20px' }}>
-                                <Typography sx={{ textAlign: 'center' }}>Logout</Typography>
-                            </MenuItem>
-                        </Menu>
-                    </Box>
+                    {isValidate &&
+                        <Box sx={{ flexGrow: 0 }}>
+                            <Tooltip title="Open settings">
+                                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                    <Avatar alt="Remy Sharp" src={settingImage} />
+                                </IconButton>
+                            </Tooltip>
+                            <Menu
+                                sx={{ mt: '45px' }}
+                                id="menu-appbar"
+                                anchorEl={anchorElUser}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                open={Boolean(anchorElUser)}
+                                onClose={handleCloseUserMenu}
+                            >
+                                <MenuItem onClick={() => logoutHandle()} sx={{ height: '20px' }}>
+                                    <Typography sx={{ textAlign: 'center' }}>Logout</Typography>
+                                </MenuItem>
+                            </Menu>
+                        </Box>
+                    }
                 </Toolbar>
             </Container>
         </AppBar>
