@@ -27,7 +27,7 @@ public class JwtService {
                 .signWith(Keys.hmacShaKeyFor(Decoders.BASE64.decode(AuthUserCommon.SECRET)))
                 .subject(username)
                 .claims(claims)
-                .expiration(new Date(System.currentTimeMillis() + (1000 + 60 + 30)))
+                .expiration(new Date(System.currentTimeMillis() + (1000 * 60 * 30)))
                 .compact();
     }
 

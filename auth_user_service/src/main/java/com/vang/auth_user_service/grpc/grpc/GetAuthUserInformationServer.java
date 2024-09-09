@@ -26,6 +26,8 @@ public class GetAuthUserInformationServer extends GetAuthUserInformationGrpc.Get
     public void getAuthUserInfo(GetAuthUserInformationRequest request, StreamObserver<GetAuthUserInformationResponse> responseObserver) {
 
         GetAuthUserInformationResponse response;
+
+        // set redis username and expiration = username_expiration
         String username = redisTemplate.opsForValue().get(AuthUserCommon.USERNAME_KEY);
         String expirationData = redisTemplate.opsForValue().get(AuthUserCommon.USERNAME_EXPIRATION_KEY);
         Date expirationDate = expirationData != null ? new Date(Long.parseLong(expirationData)) : new Date();

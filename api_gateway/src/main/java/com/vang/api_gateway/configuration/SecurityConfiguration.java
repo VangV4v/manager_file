@@ -45,6 +45,7 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests(auth -> {
            auth.requestMatchers(AccessRole.nonAccessRoles()).permitAll()
                    .requestMatchers(AccessRole.accessAdminRole()).hasRole("ADMIN")
+                   .requestMatchers(AccessRole.accessUserRole()).hasRole("USER")
                    .anyRequest().authenticated();
         });
         http.addFilterAt(jwtFilter, UsernamePasswordAuthenticationFilter.class);

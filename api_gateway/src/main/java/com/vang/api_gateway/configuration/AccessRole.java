@@ -22,4 +22,11 @@ public class AccessRole {
         return Arrays.stream(adminRoles.toString().split(",")).toArray(String[]::new);
     }
 
+    public static String[] accessUserRole() {
+
+        StringBuilder adminRoles = new StringBuilder();
+        adminRoles.append("/api/v1/folders/**,");
+        return Arrays.stream(adminRoles.toString().split(",")).toArray(String[]::new);
+    }
+
 }

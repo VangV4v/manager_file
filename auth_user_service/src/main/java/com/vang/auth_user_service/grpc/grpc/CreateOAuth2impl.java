@@ -27,8 +27,8 @@ public class CreateOAuth2impl extends CreateOauth2InfoGrpc.CreateOauth2InfoImplB
 
         String jwt = jwtService.generateToken(request.getUsername());
         //save data into redis
-        redisTemplate.opsForValue().set(AuthUserCommon.USERNAME_KEY, request.getUsername());
-        redisTemplate.opsForValue().set(AuthUserCommon.USERNAME_EXPIRATION_KEY, System.currentTimeMillis()+ (1000 * 60 * 30)+"");
+        redisTemplate.opsForValue().set(request.getUsername(), request.getUsername());
+        redisTemplate.opsForValue().set(request.getUsername()+"_expiration", System.currentTimeMillis()+ (1000 * 60 * 30)+"");
         CreateOauth2InfoReply reply = CreateOauth2InfoReply.newBuilder().setStatus(Boolean.TRUE).setJwt(jwt).build();
         responseObserver.onNext(reply);
         responseObserver.onCompleted();

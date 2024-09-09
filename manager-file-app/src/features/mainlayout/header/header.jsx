@@ -120,6 +120,7 @@ function ResponsiveAppBar() {
                         {isValidate &&
                             <Button
                                 onClick={handleCloseNavMenu}
+                                href='/home'
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
                                 HOME
