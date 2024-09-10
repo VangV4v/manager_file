@@ -10,6 +10,7 @@ service GetAuthUserInformation {
 
 message GetAuthUserInformationRequest {
   int32 type = 1;
+  string username = 2;
 }
 
 message GetAuthUserInformationResponse {

@@ -1,7 +1,6 @@
 package com.vang.api_gateway.configuration;
 
 import com.vang.api_gateway.common.Common;
-import com.vang.api_gateway.sahred.StoreData;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -43,7 +42,6 @@ public class JwtFilter extends OncePerRequestFilter {
 
             String role = jwtService.extractRole(token);
             String username = jwtService.extractUsername(token);
-            StoreData.setInstance(username);
             UserDetails userDetails = new User(username, Common.EMPTY_STRING, List.of(new SimpleGrantedAuthority(role)));
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
