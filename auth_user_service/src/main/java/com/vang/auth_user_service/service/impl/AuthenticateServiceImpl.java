@@ -6,7 +6,6 @@ import com.vang.auth_user_service.model.AuthRequestModel;
 import com.vang.auth_user_service.model.AuthResponseModel;
 import com.vang.auth_user_service.service.AuthenticateService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,13 +22,11 @@ public class AuthenticateServiceImpl implements AuthenticateService {
 
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    private final RedisTemplate<String, String> redisTemplate;
 
     @Autowired
-    public AuthenticateServiceImpl(JwtService jwtService, AuthenticationManager authenticationManager, RedisTemplate<String, String> redisTemplate) {
+    public AuthenticateServiceImpl(JwtService jwtService, AuthenticationManager authenticationManager) {
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
-        this.redisTemplate = redisTemplate;
     }
 
     @Override
@@ -41,10 +38,6 @@ public class AuthenticateServiceImpl implements AuthenticateService {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(requestModel.getUsername(), requestModel.getPassword()));
             if(authentication.isAuthenticated()) {
 
-                //save data into redis
-                redisTemplate.opsForValue().set(requestModel.getUsername(), requestModel.getUsername());
-                redisTemplate.opsForValue().set(requestModel.getUsername()+AuthUserCommon.EXTENSION, System.currentTimeMillis()+ (1000 * 60 * 30)+"");
-                //end save data
                 authResponseModel.setJwt(jwtService.generateToken(requestModel.getUsername()));
                 authResponseModel.setRole(AuthUserCommon.ROLE_VALUE);
                 authResponseModel.setSuccess(Boolean.TRUE);

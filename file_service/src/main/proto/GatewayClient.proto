@@ -1,0 +1,18 @@
+syntax = "proto3";
+package com.vang;
+option java_package = "com.vang.file_service.grpc.generated";
+option java_multiple_files = true;
+option java_outer_classname = "GatewayClient";
+
+service GetUsernameStore {
+  rpc getStoreData(GetUsernameStoreRequest) returns (GetUsernameStoreReply);
+}
+
+message GetUsernameStoreRequest {
+  int32 type = 32;
+}
+
+message GetUsernameStoreReply {
+  bool status = 1;
+  string username = 2;
+}

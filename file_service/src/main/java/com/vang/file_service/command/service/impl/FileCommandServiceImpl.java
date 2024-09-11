@@ -10,6 +10,7 @@ import com.vang.file_service.command.service.FileCommandService;
 import com.vang.file_service.common.FileCommon;
 import com.vang.file_service.grpc.grpc.AuthUserClient;
 import com.vang.file_service.grpc.grpc.FolderClientImpl;
+import com.vang.file_service.grpc.grpc.GatewayClientImpl;
 import com.vang.file_service.grpc.grpc.UserClientImpl;
 import com.vang.file_service.grpc.grpcmodel.FolderGrpcModel;
 import com.vang.file_service.grpc.grpcmodel.UserGrpcModel;
@@ -27,19 +28,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class FileCommandServiceImpl implements FileCommandService {
 
-    private final AuthUserClient authUserClient;
     private final UserClientImpl userClient;
     private final FolderClientImpl folderClient;
     private final CommandGateway commandGateway;
     private final MinioClient minioClient;
+    private final GatewayClientImpl gatewayClient;
 
     @Autowired
-    public FileCommandServiceImpl(AuthUserClient authUserClient, UserClientImpl userClient, FolderClientImpl folderClient, CommandGateway commandGateway, MinioClient minioClient) {
-        this.authUserClient = authUserClient;
+    public FileCommandServiceImpl(UserClientImpl userClient, FolderClientImpl folderClient, CommandGateway commandGateway, MinioClient minioClient, GatewayClientImpl gatewayClient) {
         this.userClient = userClient;
         this.folderClient = folderClient;
         this.commandGateway = commandGateway;
         this.minioClient = minioClient;
+        this.gatewayClient = gatewayClient;
     }
 
     @SneakyThrows
@@ -50,7 +51,8 @@ public class FileCommandServiceImpl implements FileCommandService {
         CreateFileCommand createFileCommand = new CreateFileCommand();
         ResponseModel responseModel = new ResponseModel();
         //get base user data
-        String authUserInfo = authUserClient.getAuthUserInformation();
+//        String authUserInfo = authUserClient.getAuthUserInformation();
+        String authUserInfo = gatewayClient.getUsernameJwt();
         String userData = userClient.getUserInfoByUsername(authUserInfo);
         UserGrpcModel userGrpcModel = gson.fromJson(userData, UserGrpcModel.class);
         //get folder data

@@ -21,6 +21,7 @@ public class FileCommon {
     public static final int GRPC_AUTH_USER_PORT = 7002;
     public static final int GRPC_USER_PORT = 5002;
     public static final int GRPC_FOLDER_PORT = 7004;
+    public static final int GRPC_GATEWAY_PORT = 2003;
     //private variable
     private static final String BASE_ID = "FILE_";
 

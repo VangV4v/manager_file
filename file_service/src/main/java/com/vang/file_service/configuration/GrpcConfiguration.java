@@ -1,10 +1,7 @@
 package com.vang.file_service.configuration;
 
 import com.vang.file_service.common.FileCommon;
-import com.vang.file_service.grpc.generated.FindFolderByIdGrpc;
-import com.vang.file_service.grpc.generated.GetAuthUserInformationGrpc;
-import com.vang.file_service.grpc.generated.GetUserInfoByUsernameGrpc;
-import com.vang.file_service.grpc.generated.UpdateCountOfFileGrpc;
+import com.vang.file_service.grpc.generated.*;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.springframework.context.annotation.Bean;
@@ -39,5 +36,12 @@ public class GrpcConfiguration {
 
         ManagedChannel channel = ManagedChannelBuilder.forAddress(FileCommon.IP, FileCommon.GRPC_FOLDER_PORT).usePlaintext().build();
         return UpdateCountOfFileGrpc.newBlockingStub(channel);
+    }
+
+    @Bean
+    public GetUsernameStoreGrpc.GetUsernameStoreBlockingStub getUsernameStoreBlockingStub() {
+
+        ManagedChannel channel = ManagedChannelBuilder.forAddress(FileCommon.IP, FileCommon.GRPC_GATEWAY_PORT).usePlaintext().build();
+        return GetUsernameStoreGrpc.newBlockingStub(channel);
     }
 }

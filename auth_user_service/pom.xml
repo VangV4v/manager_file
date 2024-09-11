@@ -103,10 +103,6 @@
 			<version>0.6.1</version>
 		</dependency>
 		<!-- End GRPC -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-redis</artifactId>
-		</dependency>
 		<!-- Swagger -->
 		<dependency>
 			<groupId>org.springdoc</groupId>
