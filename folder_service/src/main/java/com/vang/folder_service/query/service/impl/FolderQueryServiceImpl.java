@@ -2,6 +2,7 @@ package com.vang.folder_service.query.service.impl;
 
 import com.google.gson.Gson;
 import com.vang.folder_service.grpc.grpc.AuthUserClient;
+import com.vang.folder_service.grpc.grpc.GatewayClientImpl;
 import com.vang.folder_service.grpc.grpc.UserClientImpl;
 import com.vang.folder_service.grpc.grpcmodel.UserGrpcModel;
 import com.vang.folder_service.query.model.FolderResponseModel;
@@ -24,19 +25,22 @@ public class FolderQueryServiceImpl implements FolderQueryService {
     private final QueryGateway queryGateway;
     private final AuthUserClient authUserClient;
     private final UserClientImpl userClient;
+    private final GatewayClientImpl gatewayClient;
 
     @Autowired
-    public FolderQueryServiceImpl(QueryGateway queryGateway, AuthUserClient authUserClient, UserClientImpl userClient) {
+    public FolderQueryServiceImpl(QueryGateway queryGateway, AuthUserClient authUserClient, UserClientImpl userClient, GatewayClientImpl gatewayClient) {
         this.queryGateway = queryGateway;
         this.authUserClient = authUserClient;
         this.userClient = userClient;
+        this.gatewayClient = gatewayClient;
     }
 
     @Override
     public ResponseEntity<List<FolderResponseModel>> findByUserId() {
 
         Gson gson = new Gson();
-        String authUserInfo = authUserClient.getAuthUserInformation();
+        //        String authUserInfo = authUserClient.getAuthUserInformation();
+        String authUserInfo = gatewayClient.getUsernameJwt();
         String userData = userClient.getUserInfoByUsername(authUserInfo);
         UserGrpcModel userGrpcModel = gson.fromJson(userData, UserGrpcModel.class);
         FindByUserId byUserId = new FindByUserId(userGrpcModel.getUserId());

@@ -11,4 +11,5 @@ public class AuthUserCommon {
     public static final String USERNAME_EXPIRATION_KEY = "userExpiration";
     public static final int GRPC_USER_PORT = 5002;
     public static final int REDIS_PORT = 6379;
+    public static final String EXTENSION = "_expiration";
 }

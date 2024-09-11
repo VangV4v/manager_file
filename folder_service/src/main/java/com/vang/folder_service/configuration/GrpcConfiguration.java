@@ -38,4 +38,11 @@ public class GrpcConfiguration {
         return DeleteFilesByFolderIdGrpc.newBlockingStub(channel);
     }
 
+    @Bean
+    public GetUsernameStoreGrpc.GetUsernameStoreBlockingStub getUsernameStoreBlockingStub() {
+
+        ManagedChannel channel = ManagedChannelBuilder.forAddress(FolderCommon.IP, FolderCommon.GRPC_GATEWAY_PORT).usePlaintext().build();
+        return GetUsernameStoreGrpc.newBlockingStub(channel);
+    }
+
 }

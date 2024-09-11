@@ -15,6 +15,7 @@ public class FolderCommon {
     public static final int GRPC_AUTH_USER_PORT = 7002;
     public static final int GRPC_FILE_PORT = 7005;
     public static final int GRPC_USER_PORT = 5002;
+    public static final int GRPC_GATEWAY_PORT = 2003;
     //private variable
     private static final String BASE_ID = "FOLDER_";
 

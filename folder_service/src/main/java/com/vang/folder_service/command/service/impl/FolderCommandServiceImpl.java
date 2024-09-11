@@ -10,6 +10,7 @@ import com.vang.folder_service.command.service.FolderCommandService;
 import com.vang.folder_service.common.FolderCommon;
 import com.vang.folder_service.data.FolderRepository;
 import com.vang.folder_service.grpc.grpc.AuthUserClient;
+import com.vang.folder_service.grpc.grpc.GatewayClientImpl;
 import com.vang.folder_service.grpc.grpc.UserClientImpl;
 import com.vang.folder_service.grpc.grpcmodel.UserGrpcModel;
 import org.apache.commons.lang.StringUtils;
@@ -26,14 +27,16 @@ public class FolderCommandServiceImpl implements FolderCommandService {
     private final CommandGateway commandGateway;
     private final FolderRepository folderRepository;
     private final AuthUserClient authUserClient;
+    private final GatewayClientImpl gatewayClient;
     private final UserClientImpl userClient;
 
     @Autowired
-    public FolderCommandServiceImpl(CommandGateway commandGateway, FolderRepository folderRepository, AuthUserClient authUserClient, UserClientImpl userClient) {
+    public FolderCommandServiceImpl(CommandGateway commandGateway, FolderRepository folderRepository, AuthUserClient authUserClient, UserClientImpl userClient, GatewayClientImpl gatewayClient) {
         this.commandGateway = commandGateway;
         this.folderRepository = folderRepository;
         this.authUserClient = authUserClient;
         this.userClient = userClient;
+        this.gatewayClient = gatewayClient;
     }
 
     @Override
@@ -43,7 +46,8 @@ public class FolderCommandServiceImpl implements FolderCommandService {
         CreateFolderCommand createFolderCommand = new CreateFolderCommand();
         ResponseModel responseModel = new ResponseModel();
         //get base user data
-        String authUserInfo = authUserClient.getAuthUserInformation();
+//        String authUserInfo = authUserClient.getAuthUserInformation();
+        String authUserInfo = gatewayClient.getUsernameJwt();
         String userData = userClient.getUserInfoByUsername(authUserInfo);
         UserGrpcModel userGrpcModel = gson.fromJson(userData, UserGrpcModel.class);
         //check data exist

@@ -42,8 +42,8 @@ public class AuthenticateServiceImpl implements AuthenticateService {
             if(authentication.isAuthenticated()) {
 
                 //save data into redis
-                redisTemplate.opsForValue().set(AuthUserCommon.USERNAME_KEY, requestModel.getUsername());
-                redisTemplate.opsForValue().set(AuthUserCommon.USERNAME_EXPIRATION_KEY, System.currentTimeMillis()+ (1000 * 60 * 30)+"");
+                redisTemplate.opsForValue().set(requestModel.getUsername(), requestModel.getUsername());
+                redisTemplate.opsForValue().set(requestModel.getUsername()+AuthUserCommon.EXTENSION, System.currentTimeMillis()+ (1000 * 60 * 30)+"");
                 //end save data
                 authResponseModel.setJwt(jwtService.generateToken(requestModel.getUsername()));
                 authResponseModel.setRole(AuthUserCommon.ROLE_VALUE);
