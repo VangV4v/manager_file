@@ -1,5 +1,7 @@
 package com.vang.folder_service.command.event;
 
+import com.vang.folder_service.command.model.FolderResponseModel;
+import com.vang.folder_service.command.sharedata.SharedData;
 import com.vang.folder_service.data.FolderRepository;
 import com.vang.folder_service.data.Folders;
 import com.vang.folder_service.grpc.grpc.FileClientImpl;
@@ -26,6 +28,9 @@ public class FolderEventsHandler {
         Folders folders = new Folders();
         BeanUtils.copyProperties(event, folders);
         folderRepository.save(folders);
+        FolderResponseModel responseModel = new FolderResponseModel();
+        BeanUtils.copyProperties(folders, responseModel);
+        SharedData.setInstance(responseModel);
     }
 
     @EventHandler

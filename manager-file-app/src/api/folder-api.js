@@ -16,6 +16,14 @@ const folderAPI = {
                 Authorization: "Bearer " + jwt,
             }
         });
+    },
+    updateToTrash(jwt, data) {
+
+        return axiosClient.put('/api/v1/folders/', data, {
+            headers: {
+                Authorization: "Bearer " + jwt,
+            }
+        });
     }
 };
 

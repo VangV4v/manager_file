@@ -11,5 +11,6 @@ public class ResponseModel implements Serializable {
 
     private boolean isSuccess = false;
     private String message;
+    private FolderResponseModel folderData = null;
     private Set<String> errors = new HashSet<>();
 }

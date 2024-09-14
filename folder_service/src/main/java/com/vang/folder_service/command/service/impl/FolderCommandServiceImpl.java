@@ -7,6 +7,7 @@ import com.vang.folder_service.command.command.UpdateFolderCommand;
 import com.vang.folder_service.command.model.FolderRequestModel;
 import com.vang.folder_service.command.model.ResponseModel;
 import com.vang.folder_service.command.service.FolderCommandService;
+import com.vang.folder_service.command.sharedata.SharedData;
 import com.vang.folder_service.common.FolderCommon;
 import com.vang.folder_service.data.FolderRepository;
 import com.vang.folder_service.grpc.grpc.AuthUserClient;
@@ -73,6 +74,7 @@ public class FolderCommandServiceImpl implements FolderCommandService {
         } else {
 
             responseModel.setSuccess(Boolean.TRUE);
+            responseModel.setFolderData(SharedData.getInstance());
             responseModel.setMessage(FolderCommon.SUCCESS_ADD);
             return new ResponseEntity<>(responseModel, HttpStatus.OK);
         }
