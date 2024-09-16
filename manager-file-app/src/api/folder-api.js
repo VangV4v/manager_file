@@ -17,7 +17,7 @@ const folderAPI = {
             }
         });
     },
-    updateToTrash(jwt, data) {
+    updateFolderByUser(jwt, data) {
 
         return axiosClient.put('/api/v1/folders/', data, {
             headers: {

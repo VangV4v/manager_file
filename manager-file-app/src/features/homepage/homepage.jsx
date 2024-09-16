@@ -1,12 +1,5 @@
 import { Alert, Box, Button, Container, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Menu, MenuItem, TextField, Typography } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import { useEffect, useState } from "react";
 import folderAPI from "../../api/folder-api";
 import { useSelector } from "react-redux";
@@ -15,19 +8,23 @@ import CheckIcon from '@mui/icons-material/Check';
 import DensityMediumIcon from '@mui/icons-material/DensityMedium';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Swal from "sweetalert2";
+import { DataGrid, useGridApiRef } from "@mui/x-data-grid";
+import EditIcon from '@mui/icons-material/Edit';
+import { MESS_SUCCESS_CREATE_FOLDER, MESS_SUCCESS_UPDATE_FOLDER } from "../../contants/contant";
 
 function HomePage() {
 
+    const [notifyMess, setNotifyMess] = useState();
     const [folderData, setFolderData] = useState([]);
     const jwt = useSelector(state => state.authUserReducer.authUser.jwt);
     const [isShowNotify, setShowNotify] = useState(false);
     const [anchorElUser, setAnchorElUser] = useState(null);
-    const [folderId, setFolderId] = useState();
-
+    const apiRef = useGridApiRef();
     const handleDoubleClicRow = () => {
 
         console.log("Double click");
     };
+
     //menu item
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
@@ -37,6 +34,7 @@ function HomePage() {
     };
     //dialog
     const [open, setOpen] = useState(false);
+    const [openEdit, setOpenEdit] = useState(false);
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -46,12 +44,17 @@ function HomePage() {
     const { register, handleSubmit } = useForm();
     const handleCreateFolder = (data) => {
 
-        console.log(data);
         folderAPI.createFolderByUser(jwt, data).then(response => {
 
+            console.log(response);
             const cloneFolderData = [...folderData];
-            cloneFolderData.push(response.data.folderData);
+            const dataResponse = {
+                ...response.data.folderData,
+                id: cloneFolderData.length + 1
+            };
+            cloneFolderData.push(dataResponse);
             setFolderData(cloneFolderData);
+            setNotifyMess(MESS_SUCCESS_CREATE_FOLDER);
             displayNotification();
         }).catch(err => {
 
@@ -61,46 +64,115 @@ function HomePage() {
     };
     //end dialog
     //delete
-    const handleDeleteFolder = (event, data) => {
+    const handleDeleteFolder = () => {
 
-        console.log(folderId);
-        console.log(data);
-        console.log(event);
+        const data = apiRef.current.getSelectedRows().values().next().value;
         const dataAfterUpdate = {
             ...data,
             status: 0
         };
         setAnchorElUser(null);
-        // Swal.fire({
-        //     title: "Are you sure?",
-        //     text: "We switch your folder to trash!",
-        //     icon: "warning",
-        //     showCancelButton: true,
-        //     confirmButtonColor: "#3085d6",
-        //     cancelButtonColor: "#d33",
-        //     confirmButtonText: "Yes, delete it!"
-        // }).then((result) => {
-        //     if (result.isConfirmed) {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "We switch your folder to trash!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
 
-        //         folderAPI.updateToTrash(jwt, dataAfterUpdate).then(response => {
-        //             Swal.fire({
-        //                 title: "Deleted!",
-        //                 text: "Your folder has been deleted.",
-        //                 icon: "success"
-        //             });
-        //         }).catch(err => {
-        //             console.log(err);
-        //         });
-        //     }
-        // });
+                folderAPI.updateFolderByUser(jwt, dataAfterUpdate).then(response => {
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your folder has been deleted.",
+                        icon: "success"
+                    });
+                    const newData = folderData.filter(item => (item.folderId != dataAfterUpdate.folderId));
+                    setFolderData(newData);
+                }).catch(err => {
+                    console.log(err);
+                });
+            }
+        });
     };
+    //data gird
+    const handleClickAction = () => {
+        setOpenEdit(true);
+        setAnchorElUser(null);
+    };
+    const columns = [
+        { field: 'id', headerName: 'No', hide: true },
+        {
+            field: 'folderName',
+            headerName: 'Folder name',
+            width: 400,
+        },
+        {
+            field: 'fileInFolder',
+            headerName: 'Count of file',
+            width: 300,
+        },
+        {
+            field: 'createdDate',
+            headerName: 'Create date',
+            width: 350,
+        },
+        {
+            field: 'action',
+            headerName: 'Action',
+            width: 300,
+            renderCell: () => (
+                <Box>
+                    <IconButton onClick={handleOpenUserMenu}><DensityMediumIcon /></IconButton>
+                    <Menu
+                        anchorEl={anchorElUser}
+                        open={Boolean(anchorElUser)}
+                        onClose={handleCloseUserMenu}
+                    >
+                        <MenuItem sx={{ width: '300px' }}>
+                            <Button sx={{ flexGrow: 1 }} endIcon={<DeleteIcon />} onClick={handleDeleteFolder}>Delete</Button>
+                        </MenuItem>
+                        <MenuItem>
+                            <Button sx={{ flexGrow: 1 }} endIcon={<EditIcon />} onClick={handleClickAction}>Rename</Button>
+                        </MenuItem>
+                    </Menu>
+                </Box>
+            )
+        },
+    ];
+    //edit folder
+    const handleUpdateNameFolder = (data) => {
 
+        const currentData = apiRef.current.getSelectedRows().values().next().value;
+        const renameData = {
+            ...currentData,
+            folderName: data.folderName,
+        };
+        folderAPI.updateFolderByUser(jwt, renameData).then(response => {
+
+            console.log(response);
+            setOpenEdit(false);
+            setNotifyMess(MESS_SUCCESS_UPDATE_FOLDER);
+            displayNotification();
+        }).catch(err => {
+            console.log(err);
+        });
+    };
     useEffect(() => {
 
         const loadFolderData = async () => {
 
             await folderAPI.getFoldersByUser(jwt).then(response => {
-                setFolderData(response.data);
+
+                const cloneData = Array.from(response.data).map((data, idx) => (
+                    {
+                        ...data,
+                        id: idx + 1
+                    }
+                ));
+                setFolderData(cloneData);
             }).catch(err => {
                 console.log(err);
             });
@@ -124,52 +196,21 @@ function HomePage() {
                 {
                     isShowNotify &&
                     <Alert sx={{ mt: 2 }} icon={<CheckIcon fontSize="inherit" />} severity="success">
-                        Create folder successfully
+                        {notifyMess}
                     </Alert>
                 }
             </Box>
-            <Box sx={{ pt: 5 }}>
-                <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell><Typography fontWeight="bold">Folder Name</Typography></TableCell>
-                                <TableCell align="right"><Typography fontWeight="bold">Count Of File</Typography></TableCell>
-                                <TableCell align="right"><Typography fontWeight="bold">Created Date</Typography></TableCell>
-                                <TableCell align="right"></TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {folderData?.map((row, idx) => (
-                                <TableRow
-                                    hover
-                                    key={row.folderId}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    onDoubleClick={handleDoubleClicRow}
-                                >
-                                    <TableCell component="th" scope="row">
-                                        {row.folderName}
-                                    </TableCell>
-                                    <TableCell align="right">{row.fileInFolder}</TableCell>
-                                    <TableCell align="right">{row.createdDate}</TableCell>
-                                    <TableCell align="right">
-                                        <IconButton onClick={handleOpenUserMenu}><DensityMediumIcon /></IconButton>
-                                        <Menu
-                                            sx={{ width: '300px' }}
-                                            anchorEl={anchorElUser}
-                                            open={Boolean(anchorElUser)}
-                                            onClose={handleCloseUserMenu}
-                                        >
-                                            <MenuItem>
-                                                <Button endIcon={<DeleteIcon />} onClick={(event) => { handleDeleteFolder(event, row); setFolderId(idx) }}>Delete</Button>
-                                            </MenuItem>
-                                        </Menu>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+            <Box sx={{ pt: 3 }}>
+                <DataGrid
+                    columnVisibilityModel={{
+                    }}
+                    apiRef={apiRef}
+                    rows={folderData}
+                    columns={columns}
+                    onRowDoubleClick={(item) => {
+                        console.log(apiRef.current.getSelectedRows().entries().next().value);
+                    }}
+                />
             </Box>
             <Box>
                 <form onSubmit={handleSubmit(handleCreateFolder)}>
@@ -197,6 +238,34 @@ function HomePage() {
                         <DialogActions>
                             <Button variant="contained" onClick={handleClose}>CLOSE</Button>
                             <Button variant="contained" type="submit">CREATE</Button>
+                        </DialogActions>
+                    </Dialog>
+                </form>
+                <form onSubmit={handleSubmit(handleUpdateNameFolder)}>
+                    <Dialog
+                        open={openEdit}
+                        onClose={handleClose}
+                        PaperProps={{
+                            component: 'form',
+
+                        }}
+                    >
+                        <DialogTitle>Rename Folder</DialogTitle>
+                        <DialogContent sx={{ width: '500px' }}>
+                            <TextField
+                                autoFocus
+                                required
+                                margin="dense"
+                                label="Folder Name"
+                                type="text"
+                                {...register("folderName")}
+                                fullWidth
+                                variant="standard"
+                            />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button variant="contained" onClick={() => { setOpenEdit(false); }}>CLOSE</Button>
+                            <Button variant="contained" type="submit">Save</Button>
                         </DialogActions>
                     </Dialog>
                 </form>

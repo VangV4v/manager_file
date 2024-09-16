@@ -51,9 +51,15 @@ public class FolderCommon {
         return password;
     }
 
+    public static String generateLikeContainQuery(String param) {
+
+        return "'%"+param+"%'";
+    }
+
     private static int getCountOfCharacters(String str, String character) {
         int count = 0;
         Arrays.stream(str.split("")).filter(value -> value.equals(character)).count();
         return count;
     }
+
 }

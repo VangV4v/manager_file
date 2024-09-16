@@ -4,7 +4,7 @@ import com.vang.folder_service.command.model.FolderResponseModel;
 
 public class SharedData {
 
-    private static FolderResponseModel instance = new FolderResponseModel();
+    private static FolderResponseModel instance = null;
 
     private SharedData() {
 

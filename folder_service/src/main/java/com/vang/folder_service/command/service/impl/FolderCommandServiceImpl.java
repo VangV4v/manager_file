@@ -5,6 +5,7 @@ import com.vang.folder_service.command.command.CreateFolderCommand;
 import com.vang.folder_service.command.command.DeleteFolderCommand;
 import com.vang.folder_service.command.command.UpdateFolderCommand;
 import com.vang.folder_service.command.model.FolderRequestModel;
+import com.vang.folder_service.command.model.FolderResponseModel;
 import com.vang.folder_service.command.model.ResponseModel;
 import com.vang.folder_service.command.service.FolderCommandService;
 import com.vang.folder_service.command.sharedata.SharedData;
@@ -14,6 +15,7 @@ import com.vang.folder_service.grpc.grpc.AuthUserClient;
 import com.vang.folder_service.grpc.grpc.GatewayClientImpl;
 import com.vang.folder_service.grpc.grpc.UserClientImpl;
 import com.vang.folder_service.grpc.grpcmodel.UserGrpcModel;
+import lombok.SneakyThrows;
 import org.apache.commons.lang.StringUtils;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.BeanUtils;
@@ -21,6 +23,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Service
 public class FolderCommandServiceImpl implements FolderCommandService {
@@ -40,6 +46,7 @@ public class FolderCommandServiceImpl implements FolderCommandService {
         this.gatewayClient = gatewayClient;
     }
 
+    @SneakyThrows
     @Override
     public ResponseEntity<ResponseModel> addFolder(FolderRequestModel requestModel) {
 
@@ -52,10 +59,10 @@ public class FolderCommandServiceImpl implements FolderCommandService {
         String userData = userClient.getUserInfoByUsername(authUserInfo);
         UserGrpcModel userGrpcModel = gson.fromJson(userData, UserGrpcModel.class);
         //check data exist
-        long checkExistFolder = folderRepository.countByFolderName(requestModel.getFolderName(), userGrpcModel.getUserId());
-        if(checkExistFolder > 0) {
+        long checkExistFolder = folderRepository.countByFolderName(requestModel.getFolderName(), userGrpcModel.getUserId(), requestModel.getFolderName() + "_");
+        if (checkExistFolder > 0) {
 
-            requestModel.setFolderName(requestModel.getFolderName()+"_"+checkExistFolder);
+            requestModel.setFolderName(requestModel.getFolderName() + "_" + checkExistFolder);
         }
         //end check data exist
         requestModel.setUserId(userGrpcModel.getUserId());
@@ -65,9 +72,9 @@ public class FolderCommandServiceImpl implements FolderCommandService {
         requestModel.setCreatedDate(FolderCommon.getCurrentDate());
         BeanUtils.copyProperties(requestModel, createFolderCommand);
 
-        String folderResponseCommand = commandGateway.sendAndWait(createFolderCommand);
-        if(StringUtils.isEmpty(folderResponseCommand)) {
+        commandGateway.sendAndWait(createFolderCommand);
 
+        if (ObjectUtils.isEmpty(SharedData.getInstance())) {
 
             responseModel.setSuccess(Boolean.FALSE);
             return new ResponseEntity<>(responseModel, HttpStatus.BAD_REQUEST);
@@ -80,29 +87,39 @@ public class FolderCommandServiceImpl implements FolderCommandService {
         }
     }
 
+    @SneakyThrows
     @Override
     public ResponseEntity<ResponseModel> updateFolder(FolderRequestModel requestModel) {
 
         UpdateFolderCommand updateFolderCommand = new UpdateFolderCommand();
         ResponseModel responseModel = new ResponseModel();
         //check data exist
-        long checkExistFolder = folderRepository.countByFolderName(requestModel.getFolderName(), requestModel.getUserId());
-        if(checkExistFolder > 0) {
+        long checkExistFolder = folderRepository.countByFolderName(requestModel.getFolderName(), requestModel.getUserId(), requestModel.getFolderName() + "_");
+        if (checkExistFolder > 0) {
 
-            requestModel.setFolderName(requestModel.getFolderName()+"_"+checkExistFolder);
+            requestModel.setFolderName(requestModel.getFolderName() + "_" + checkExistFolder);
         }
         //end check data
         requestModel.setLastModified(FolderCommon.getCurrentDate());
         BeanUtils.copyProperties(requestModel, updateFolderCommand);
-        String responseCommand = commandGateway.sendAndWait(updateFolderCommand);
 
-        if(StringUtils.isEmpty(responseCommand)) {
+        Thread updateFolderThread = new Thread() {
+            @Override
+            public void run() {
+                commandGateway.send(updateFolderCommand);
+            }
+        };
+        updateFolderThread.start();
+        updateFolderThread.join();
+
+        if (ObjectUtils.isEmpty(SharedData.getInstance())) {
 
             responseModel.setSuccess(Boolean.FALSE);
             return new ResponseEntity<>(responseModel, HttpStatus.BAD_REQUEST);
         } else {
 
             responseModel.setSuccess(Boolean.TRUE);
+            responseModel.setFolderData(SharedData.getInstance());
             responseModel.setMessage(FolderCommon.SUCCESS_UPDATE);
             return new ResponseEntity<>(responseModel, HttpStatus.OK);
         }
@@ -116,7 +133,7 @@ public class FolderCommandServiceImpl implements FolderCommandService {
         BeanUtils.copyProperties(requestModel, deleteFolderCommand);
         String responseCommand = commandGateway.sendAndWait(deleteFolderCommand);
 
-        if(StringUtils.isEmpty(responseCommand)) {
+        if (StringUtils.isEmpty(responseCommand)) {
 
             responseModel.setSuccess(Boolean.FALSE);
             return new ResponseEntity<>(responseModel, HttpStatus.BAD_REQUEST);

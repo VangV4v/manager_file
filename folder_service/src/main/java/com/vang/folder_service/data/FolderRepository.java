@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface FolderRepository extends JpaRepository<Folders, String> {
 
-    @Query(value = "select count(f.foldername) from folders f where f.foldername = ?1 and f.userid = ?2", nativeQuery = true)
-    long countByFolderName(String folderName, String userId);
+    @Query(value = "select count(f.foldername) from folders f where (f.foldername = ?1 or f.foldername like %?3%) and f.userid = ?2", nativeQuery = true)
+    long countByFolderName(String folderName, String userId, String folderWithExt);
 
     @Query(value = "select f.fileinfolder from folders f where f.folder = ?1 and f.userid = ?2", nativeQuery = true)
     int getFileInFolder(String folderName, String userId);
