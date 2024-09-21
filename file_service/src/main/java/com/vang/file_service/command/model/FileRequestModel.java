@@ -2,7 +2,6 @@ package com.vang.file_service.command.model;
 
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.Serializable;
 
 @Data

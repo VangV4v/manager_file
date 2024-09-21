@@ -6,6 +6,8 @@ import com.vang.folder_service.command.command.UpdateFolderCommand;
 import com.vang.folder_service.command.event.FolderCreatedEvent;
 import com.vang.folder_service.command.event.FolderDeletedEvent;
 import com.vang.folder_service.command.event.FolderUpdatedEvent;
+import com.vang.folder_service.command.model.FolderResponseModel;
+import com.vang.folder_service.command.sharedata.SharedData;
 import lombok.Data;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -70,6 +72,9 @@ public class FolderAggregate {
         this.status = event.getStatus();
         this.createdDate = event.getCreatedDate();
         this.lastModified = event.getLastModified();
+        FolderResponseModel responseModel = new FolderResponseModel();
+        BeanUtils.copyProperties(event, responseModel);
+        SharedData.setInstance(responseModel);
     }
 
     @EventSourcingHandler
@@ -85,6 +90,9 @@ public class FolderAggregate {
         this.status = event.getStatus();
         this.createdDate = event.getCreatedDate();
         this.lastModified = event.getLastModified();
+        FolderResponseModel responseModel = new FolderResponseModel();
+        BeanUtils.copyProperties(event, responseModel);
+        SharedData.setInstance(responseModel);
     }
 
     @EventSourcingHandler

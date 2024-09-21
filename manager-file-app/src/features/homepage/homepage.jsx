@@ -152,7 +152,14 @@ function HomePage() {
         };
         folderAPI.updateFolderByUser(jwt, renameData).then(response => {
 
-            console.log(response);
+            const newFolderData = [...folderData];
+            newFolderData.filter(item => {
+
+                if (item.folderId === response.data.folderData.folderId) {
+                    item.folderName = response.data.folderData.folderName;
+                }
+            });
+            setFolderData(newFolderData);
             setOpenEdit(false);
             setNotifyMess(MESS_SUCCESS_UPDATE_FOLDER);
             displayNotification();

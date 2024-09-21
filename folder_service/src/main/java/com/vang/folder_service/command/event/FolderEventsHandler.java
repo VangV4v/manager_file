@@ -9,9 +9,8 @@ import org.axonframework.eventhandling.EventHandler;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
-@Service
+@Component
 public class FolderEventsHandler {
 
     private final FolderRepository folderRepository;
@@ -29,10 +28,6 @@ public class FolderEventsHandler {
         Folders folders = new Folders();
         BeanUtils.copyProperties(event, folders);
         folderRepository.save(folders);
-        FolderResponseModel responseModel = new FolderResponseModel();
-        BeanUtils.copyProperties(folders, responseModel);
-        SharedData.setInstance(responseModel);
-        FolderResponseModel test = SharedData.getInstance();
     }
 
     @EventHandler
@@ -41,9 +36,6 @@ public class FolderEventsHandler {
         Folders folders = new Folders();
         BeanUtils.copyProperties(event, folders);
         folderRepository.save(folders);
-        FolderResponseModel responseModel = new FolderResponseModel();
-        BeanUtils.copyProperties(folders, responseModel);
-        SharedData.setInstance(responseModel);
         if(event.getStatus() == 0) {
 
             fileClient.updateStatusFiles(event.getFolderId(), event.getUserId());

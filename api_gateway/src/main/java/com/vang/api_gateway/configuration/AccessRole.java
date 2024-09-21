@@ -26,6 +26,7 @@ public class AccessRole {
 
         StringBuilder adminRoles = new StringBuilder();
         adminRoles.append("/api/v1/folders/**,");
+        adminRoles.append("/api/v1/files/**,");
         return Arrays.stream(adminRoles.toString().split(",")).toArray(String[]::new);
     }
 

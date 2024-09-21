@@ -25,9 +25,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 @Service
 public class FolderCommandServiceImpl implements FolderCommandService {
 
@@ -72,7 +69,7 @@ public class FolderCommandServiceImpl implements FolderCommandService {
         requestModel.setCreatedDate(FolderCommon.getCurrentDate());
         BeanUtils.copyProperties(requestModel, createFolderCommand);
 
-        commandGateway.sendAndWait(createFolderCommand);
+        String responseCommand = commandGateway.sendAndWait(createFolderCommand);
 
         if (ObjectUtils.isEmpty(SharedData.getInstance())) {
 
@@ -102,15 +99,7 @@ public class FolderCommandServiceImpl implements FolderCommandService {
         //end check data
         requestModel.setLastModified(FolderCommon.getCurrentDate());
         BeanUtils.copyProperties(requestModel, updateFolderCommand);
-
-        Thread updateFolderThread = new Thread() {
-            @Override
-            public void run() {
-                commandGateway.send(updateFolderCommand);
-            }
-        };
-        updateFolderThread.start();
-        updateFolderThread.join();
+        String responseCommand = commandGateway.sendAndWait(updateFolderCommand);
 
         if (ObjectUtils.isEmpty(SharedData.getInstance())) {
 
