@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 import { DataGrid, useGridApiRef } from "@mui/x-data-grid";
 import EditIcon from '@mui/icons-material/Edit';
 import { MESS_SUCCESS_CREATE_FOLDER, MESS_SUCCESS_UPDATE_FOLDER } from "../../contants/contant";
+import { useNavigate } from "react-router-dom";
 
 function HomePage() {
 
@@ -20,6 +21,7 @@ function HomePage() {
     const [isShowNotify, setShowNotify] = useState(false);
     const [anchorElUser, setAnchorElUser] = useState(null);
     const apiRef = useGridApiRef();
+    const navigate = useNavigate();
     const handleDoubleClicRow = () => {
 
         console.log("Double click");
@@ -215,7 +217,11 @@ function HomePage() {
                     rows={folderData}
                     columns={columns}
                     onRowDoubleClick={(item) => {
-                        console.log(apiRef.current.getSelectedRows().entries().next().value);
+                        navigate("/open-folder", {
+                            state: {
+                                folderData: apiRef.current.getSelectedRows().values().next().value
+                            }
+                        })
                     }}
                 />
             </Box>

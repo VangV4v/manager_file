@@ -69,6 +69,13 @@ public class FileCommandServiceImpl implements FileCommandService {
         //upload file and cache data
         if (requestModel.getFileData() != null) {
 
+            if(requestModel.getFileData().getOriginalFilename().contains(".jpg") || requestModel.getFileData().getOriginalFilename().contains(".png") || requestModel.getFileData().getOriginalFilename().contains(".gif")){
+
+                requestModel.setFileType("1");
+            } else {
+
+                requestModel.setFileType("2");
+            }
             String fileName = (System.currentTimeMillis() + "_" + requestModel.getFileData().getOriginalFilename()).replace(" ", "_");
             String urlImage = FileCommon.END_POINT + "/" + FileCommon.BUCKET + "/" + fileName;
             PutObjectArgs uploadObject = PutObjectArgs.builder()

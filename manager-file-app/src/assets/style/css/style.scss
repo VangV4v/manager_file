@@ -36,3 +36,13 @@
 .css-16mfp94-MuiTablePagination-root {
     display: none;
 }
+
+.img {
+    &-autofill {
+        height: 200px;
+    }
+    &-frame {
+        border: solid blue 2px;
+        background-color: rgb(243, 243, 243);
+    }
+}

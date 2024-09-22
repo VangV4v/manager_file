@@ -4,6 +4,7 @@ import PublicStorePage from "../public_store/publicstore";
 import LoginPage from "../login/login";
 import HomePage from "../homepage/homepage";
 import ProcessOauth2Page from "../oauth2/process-oauth2";
+import OpenFolderPage from "../open-folder/open-folder";
 
 function MainLayoutPage() {
     return (
@@ -13,6 +14,7 @@ function MainLayoutPage() {
                 <Route path="/public-store" element={<PublicStorePage />}></Route>
                 <Route path="/login" element={<LoginPage />}></Route>
                 <Route path="/home" element={<HomePage />}></Route>
+                <Route path="/open-folder" element={<OpenFolderPage />}></Route>
                 <Route path="/process-oauth2" element={<ProcessOauth2Page />}></Route>
             </Routes>
         </>
