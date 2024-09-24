@@ -19,7 +19,7 @@ public class FileCommandController {
         this.fileCommandService = fileCommandService;
     }
 
-    @PostMapping(produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(produces = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ResponseModel> addFile(@ModelAttribute FileRequestModel requestModel) {
 
         return fileCommandService.addFile(requestModel);

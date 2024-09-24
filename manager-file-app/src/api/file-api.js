@@ -7,6 +7,13 @@ const fileAPI = {
                 Authorization: "Bearer " + jwt,
             }
         });
+    },
+    uploadFileByUser(param, jwt) {
+        return axiosClient.post("/api/v1/files/", param, {
+            headers: {
+                Authorization: "Bearer " + jwt,
+            }
+        });
     }
 };
 

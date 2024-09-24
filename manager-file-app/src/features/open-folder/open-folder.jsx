@@ -1,7 +1,7 @@
 import { Box, Button, Container, Grid, IconButton, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import fileAPI from "../../api/file-api";
 import { Image } from "antd";
 import DownloadIcon from '@mui/icons-material/Download';
@@ -13,10 +13,20 @@ function OpenFolderPage() {
     const location = useLocation();
     const jwt = useSelector(state => state.authUserReducer.authUser.jwt);
     const [fileData, setFileData] = useState([]);
+    const navigate = useNavigate();
     const folderId = location.state.folderData.folderId;
 
     const handleDowloadFileData = (url) => {
         window.open(url, '_blank');
+    };
+
+    const handleOpenUploadPage = () => {
+
+        navigate("/upload-file", {
+            state: {
+                folderId: folderId
+            }
+        });
     };
 
     useEffect(() => {
@@ -38,7 +48,7 @@ function OpenFolderPage() {
         <Container sx={{ mt: 2 }} maxWidth="xl">
 
             <Box>
-                <Button variant="contained" endIcon={<UploadIcon />}>Upload</Button>
+                <Button variant="contained" onClick={handleOpenUploadPage} endIcon={<UploadIcon />}>Upload</Button>
             </Box>
 
             <Grid container sx={{ mt: 2 }}>
