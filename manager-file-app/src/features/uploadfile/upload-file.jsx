@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import fileAPI from "../../api/file-api";
 import { useSelector } from "react-redux";
 
@@ -9,6 +9,7 @@ function UploadFilePage(props) {
     const location = useLocation();
     const folderId = location.state.folderId;
     const jwt = useSelector(state => state.authUserReducer.authUser.jwt);
+    const navigate = useNavigate();
     const { register, handleSubmit } = useForm();
     const handleSubmitForm = (data) => {
 
@@ -17,7 +18,7 @@ function UploadFilePage(props) {
         formData.append("fileName", data.fileName);
         formData.append("folderId", folderId);
         fileAPI.uploadFileByUser(formData, jwt).then(response => {
-            console.log(response);
+            window.location.href = `/open-folder?upload=true&folderId=${folderId}`;
         }).catch(err => {
             console.log(err);
         });
@@ -25,7 +26,7 @@ function UploadFilePage(props) {
 
     return (
         <>
-            <form onSubmit={handleSubmit(handleSubmitForm)}>
+            <form onSubmit={handleSubmit(handleSubmitForm)} encType='multipart/form-data'>
 
                 <input type="file" {...register("fileData")} />
                 <input {...register("fileName")} />

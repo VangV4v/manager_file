@@ -14,6 +14,13 @@ const fileAPI = {
                 Authorization: "Bearer " + jwt,
             }
         });
+    },
+    uploadStatusDelete(param, jwt) {
+        return axiosClient.put("/api/v1/files/", param, {
+            headers: {
+                Authorization: "Bearer " + jwt,
+            }
+        });
     }
 };
 

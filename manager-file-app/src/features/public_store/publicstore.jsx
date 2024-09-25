@@ -50,7 +50,7 @@ function PublicStorePage() {
                             endAdornment: <IconButton onClick={handleDowloadImage}><DownloadIcon /></IconButton>
                         }} />
                     </CardContent>
-                    <form id="publicStore" encType='multipart/form-data' onSubmit={handleSubmit(getData)}>
+                    <form id="publicStore" onSubmit={handleSubmit(getData)}>
                         <CardContent>
                             <Box>
                                 <center>

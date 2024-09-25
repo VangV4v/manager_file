@@ -42,6 +42,9 @@ public class FileEventsHandler {
         Files files = new Files();
         BeanUtils.copyProperties(event, files);
         fileRepository.save(files);
+        if(event.getStatus() == 0) {
+            folderClient.updateCountOfFile(event.getFolderId(), 2);
+        }
     }
 
     @SneakyThrows
