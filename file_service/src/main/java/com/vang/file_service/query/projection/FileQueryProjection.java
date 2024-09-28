@@ -4,6 +4,7 @@ import com.vang.file_service.data.FileRepository;
 import com.vang.file_service.data.Files;
 import com.vang.file_service.query.model.FileResponseModel;
 import com.vang.file_service.query.queries.FIndAllFiles;
+import com.vang.file_service.query.queries.FindAllByStatus;
 import com.vang.file_service.query.queries.FindByFileId;
 import com.vang.file_service.query.queries.FindByUserId;
 import org.axonframework.queryhandling.QueryHandler;
@@ -57,6 +58,19 @@ public class FileQueryProjection {
     public List<FileResponseModel> findAllFiles(FIndAllFiles allFiles) {
 
         List<Files> files = fileRepository.findAll();
+        List<FileResponseModel> fileResponseModels = new ArrayList<>();
+        files.forEach(e -> {
+            FileResponseModel fileResponseModel = new FileResponseModel();
+            BeanUtils.copyProperties(e, fileResponseModel);
+            fileResponseModels.add(fileResponseModel);
+        });
+        return fileResponseModels;
+    }
+
+    @QueryHandler
+    public List<FileResponseModel> findAllByStatusDelete(FindAllByStatus allByStatus) {
+
+        List<Files> files = fileRepository.findAllByDeleteStatusAndUserId(allByStatus.getUserId());
         List<FileResponseModel> fileResponseModels = new ArrayList<>();
         files.forEach(e -> {
             FileResponseModel fileResponseModel = new FileResponseModel();

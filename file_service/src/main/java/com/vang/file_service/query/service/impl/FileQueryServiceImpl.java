@@ -7,6 +7,7 @@ import com.vang.file_service.grpc.grpc.UserClientImpl;
 import com.vang.file_service.grpc.grpcmodel.UserGrpcModel;
 import com.vang.file_service.query.model.FileResponseModel;
 import com.vang.file_service.query.queries.FIndAllFiles;
+import com.vang.file_service.query.queries.FindAllByStatus;
 import com.vang.file_service.query.queries.FindByFileId;
 import com.vang.file_service.query.queries.FindByUserId;
 import com.vang.file_service.query.service.FileQueryService;
@@ -64,6 +65,18 @@ public class FileQueryServiceImpl implements FileQueryService {
         UserGrpcModel userGrpcModel = gson.fromJson(userData, UserGrpcModel.class);
         FindByUserId findByUserId = new FindByUserId(userGrpcModel.getUserId(), folderId);
         List<FileResponseModel> responseModels = queryGateway.query(findByUserId, ResponseTypes.multipleInstancesOf(FileResponseModel.class)).join();
+        return new ResponseEntity<>(responseModels, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<List<FileResponseModel>> findAllByStatusDelete() {
+
+        Gson gson = new Gson();
+        String authUserInfo = gatewayClient.getUsernameJwt();
+        String userData = userClient.getUserInfoByUsername(authUserInfo);
+        UserGrpcModel userGrpcModel = gson.fromJson(userData, UserGrpcModel.class);
+        FindAllByStatus allByStatus = new FindAllByStatus(userGrpcModel.getUserId());
+        List<FileResponseModel> responseModels = queryGateway.query(allByStatus, ResponseTypes.multipleInstancesOf(FileResponseModel.class)).join();
         return new ResponseEntity<>(responseModels, HttpStatus.OK);
     }
 }

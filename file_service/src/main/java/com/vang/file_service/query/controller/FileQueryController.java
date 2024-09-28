@@ -41,4 +41,10 @@ public class FileQueryController {
         return fileQueryService.findByUserId(folderId);
     }
 
+    @GetMapping("trash/")
+    public ResponseEntity<List<FileResponseModel>> findAllByStatusDelete() {
+
+        return fileQueryService.findAllByStatusDelete();
+    }
+
 }

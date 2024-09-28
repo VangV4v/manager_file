@@ -10,4 +10,5 @@ public interface FileQueryService {
     ResponseEntity<FileResponseModel> findByFileId(String fileId);
     ResponseEntity<List<FileResponseModel>> findAllFiles();
     ResponseEntity<List<FileResponseModel>> findByUserId(String folderId);
+    ResponseEntity<List<FileResponseModel>> findAllByStatusDelete();
 }

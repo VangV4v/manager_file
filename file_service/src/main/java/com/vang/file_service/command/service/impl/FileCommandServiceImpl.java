@@ -106,7 +106,6 @@ public class FileCommandServiceImpl implements FileCommandService {
         UpdateFileCommand updateFileCommand = new UpdateFileCommand();
         ResponseModel responseModel = new ResponseModel();
         requestModel.setLastModified(FileCommon.getCurrentDate());
-        requestModel.setStatus(0);
         BeanUtils.copyProperties(requestModel, updateFileCommand);
         String responseCommand = commandGateway.sendAndWait(updateFileCommand);
         if(StringUtils.isEmpty(responseCommand)) {
