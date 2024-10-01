@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface TrashService {
     ResponseEntity<List<FileResponseModel>> getAllByFileId();
+
     ResponseEntity<ResponseModel> restoreData(FileRequestModel requestModel);
 
+    ResponseEntity<ResponseModel> deleteData(FileRequestModel requestModel);
 }

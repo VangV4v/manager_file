@@ -20,4 +20,8 @@ public interface FileRepository extends JpaRepository<Files, String> {
     @Modifying
     @Query(value = "update files set status = ?3 where folderid = ?1 and userid = ?2", nativeQuery = true)
     int updateAllByFolderIdAndUserId(String folderId, String userId, int status);
+
+    @Modifying
+    @Query(value = "delete from files where folderId = ?1 and fileId = ?2 and status = 0", nativeQuery = true)
+    int deleteAllByFolderIdAndFileId(String folderId, String fileId);
 }

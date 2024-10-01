@@ -51,7 +51,7 @@ public class FileEventsHandler {
     @EventHandler
     public void handle(FileDeletedEvent event) {
 
-        fileRepository.deleteById(event.getFileId());
+        fileRepository.deleteAllByFolderIdAndUserId(event.getFolderId(), event.getUserId());
         //update count in folder
         folderClient.updateCountOfFile(event.getFolderId(), 2);
         RemoveObjectArgs removeObjectArgs = RemoveObjectArgs.builder()

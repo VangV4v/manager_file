@@ -24,4 +24,8 @@ public interface FolderRepository extends JpaRepository<Folders, String> {
     @Modifying
     @Query(value = "update folders set fileinfolder = fileinfolder - 1 where folderid = ?1", nativeQuery = true)
     int updateDecreamentFileInFolder(String folderId);
+
+    @Modifying
+    @Query(value = "delete from folders where folderId = ?1 and userId = ?2 and status = 0 and fileInFolder = 0", nativeQuery = true)
+    int deleteAllByFolderIdAndUserId(String folderId, String userId);
 }

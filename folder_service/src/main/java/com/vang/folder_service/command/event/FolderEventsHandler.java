@@ -45,7 +45,7 @@ public class FolderEventsHandler {
     @EventHandler
     public void handle(FolderDeletedEvent event) {
 
-        folderRepository.deleteById(event.getFolderId());
+        folderRepository.deleteAllByFolderIdAndUserId(event.getFolderId(), event.getUserId());
         fileClient.deleteFilesByFolderId(event.getFolderId(), event.getUserId());
     }
 

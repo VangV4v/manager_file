@@ -2,9 +2,11 @@ package com.vang.trash_service.service.impl;
 
 import com.vang.trash_service.common.UriCommon;
 import com.vang.trash_service.model.request.FileRequestModel;
+import com.vang.trash_service.model.request.FolderRequestModel;
 import com.vang.trash_service.model.response.FileResponseModel;
 import com.vang.trash_service.model.response.ResponseModel;
 import com.vang.trash_service.service.TrashService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +39,16 @@ public class TrashServiceImpl implements TrashService {
     public ResponseEntity<ResponseModel> restoreData(FileRequestModel requestModel) {
 
         restTemplate.put(UriCommon.FILE_SERVICE_URI, requestModel);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<ResponseModel> deleteData(FileRequestModel requestModel) {
+
+        FolderRequestModel folderRequestModel = new FolderRequestModel();
+        BeanUtils.copyProperties(requestModel, folderRequestModel);
+        restTemplate.delete(UriCommon.FILE_SERVICE_URI, requestModel);
+        restTemplate.delete(UriCommon.FOLDER_SERVICE_URI, folderRequestModel);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

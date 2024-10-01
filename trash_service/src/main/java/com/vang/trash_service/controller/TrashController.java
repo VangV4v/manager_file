@@ -21,7 +21,7 @@ public class TrashController {
         this.trashService = trashService;
     }
 
-    @GetMapping
+    @GetMapping("file/")
     public ResponseEntity<List<FileResponseModel>> getFileById() {
 
         return trashService.getAllByFileId();
@@ -31,5 +31,10 @@ public class TrashController {
     public ResponseEntity<ResponseModel> restoreData(@RequestBody FileRequestModel requestModel) {
 
         return trashService.restoreData(requestModel);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<ResponseModel> deleteData(@RequestBody FileRequestModel requestModel) {
+        return trashService.deleteData(requestModel);
     }
 }
