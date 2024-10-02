@@ -15,4 +15,5 @@ public class DeleteFolderCommand {
     private String userId;
     private String userInformation;
     private int status;
+    private int fileInTrash;
 }

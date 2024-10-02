@@ -27,7 +27,7 @@ public class TrashController {
         return trashService.getAllByFileId();
     }
 
-    @PutMapping
+    @PutMapping("restore/")
     public ResponseEntity<ResponseModel> restoreData(@RequestBody FileRequestModel requestModel) {
 
         return trashService.restoreData(requestModel);

@@ -17,4 +17,5 @@ public class CreateFolderCommand {
     private int status;
     private String createdDate;
     private String lastModified;
+    private int fileInTrash;
 }

@@ -15,4 +15,5 @@ public class FolderCreatedEvent {
     private int status;
     private String createdDate;
     private String lastModified;
+    private int fileInTrash;
 }

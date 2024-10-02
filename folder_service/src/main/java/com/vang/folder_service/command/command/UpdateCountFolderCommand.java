@@ -1,11 +1,13 @@
-package com.vang.folder_service.command.event;
+package com.vang.folder_service.command.command;
 
 import lombok.Data;
+import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 @Data
-public class FolderUpdatedEvent {
+public class UpdateCountFolderCommand {
 
-    private String aggregateId;
+    @TargetAggregateIdentifier
+    private String aggregateId = System.currentTimeMillis()+"";
     private String folderId;
     private String folderName;
     private String folderPath;

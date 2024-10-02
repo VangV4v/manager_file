@@ -8,4 +8,5 @@ public interface FolderCommandService {
     ResponseEntity<ResponseModel> addFolder(FolderRequestModel requestModel);
     ResponseEntity<ResponseModel> updateFolder(FolderRequestModel requestModel);
     ResponseEntity<ResponseModel> deleteFolder(FolderRequestModel requestModel);
+    ResponseEntity<ResponseModel> updateCount(FolderRequestModel requestModel);
 }

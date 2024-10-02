@@ -32,6 +32,10 @@ public class UpdateCountImpl extends UpdateCountOfFileGrpc.UpdateCountOfFileImpl
         } else if (request.getType() == 2) {
 
             rowChange = folderRepository.updateDecreamentFileInFolder(request.getFolderId());
+        } else if (request.getType() == 3) {
+
+            rowChange = folderRepository.updateTrashByFolderId(request.getFolderId());
+            folderRepository.deleteAllByFolderIdAndUserId(request.getFolderId());
         }
         reply = UpdateCountOfFileReply.newBuilder().setRowChange(rowChange).build();
         responseObserver.onNext(reply);

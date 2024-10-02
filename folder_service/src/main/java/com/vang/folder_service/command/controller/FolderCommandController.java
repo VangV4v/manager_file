@@ -30,6 +30,11 @@ public class FolderCommandController {
         return folderCommandService.updateFolder(requestModel);
     }
 
+    @PutMapping("restore/")
+    public ResponseEntity<ResponseModel> updateCount(@RequestBody FolderRequestModel requestModel) {
+        return folderCommandService.updateCount(requestModel);
+    }
+
     @DeleteMapping
     public ResponseEntity<ResponseModel> deleteFolder(@RequestBody FolderRequestModel requestModel) {
 

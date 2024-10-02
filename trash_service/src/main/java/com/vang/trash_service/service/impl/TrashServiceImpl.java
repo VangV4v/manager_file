@@ -8,11 +8,14 @@ import com.vang.trash_service.model.response.ResponseModel;
 import com.vang.trash_service.service.TrashService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,8 +41,14 @@ public class TrashServiceImpl implements TrashService {
     @Override
     public ResponseEntity<ResponseModel> restoreData(FileRequestModel requestModel) {
 
-        restTemplate.put(UriCommon.FILE_SERVICE_URI, requestModel);
-        return new ResponseEntity<>(HttpStatus.OK);
+        FolderRequestModel folderRequestModel = new FolderRequestModel();
+        BeanUtils.copyProperties(requestModel, folderRequestModel);
+        requestModel.setStatus(1);
+        HttpEntity<FileRequestModel> fileRequestModelHttpEntity = new HttpEntity<>(requestModel);
+        HttpEntity<FolderRequestModel> folderRequestModelHttpEntity = new HttpEntity<>(folderRequestModel);
+        restTemplate.exchange(URI.create(UriCommon.FILE_SERVICE_URI), HttpMethod.PUT, fileRequestModelHttpEntity, ResponseModel.class);
+        restTemplate.exchange(URI.create(UriCommon.FOLDER_RESTORE_SERVICE_URI), HttpMethod.PUT, folderRequestModelHttpEntity, ResponseModel.class);
+        return new ResponseEntity<>(new ResponseModel(), HttpStatus.OK);
     }
 
     @Override
@@ -47,8 +56,10 @@ public class TrashServiceImpl implements TrashService {
 
         FolderRequestModel folderRequestModel = new FolderRequestModel();
         BeanUtils.copyProperties(requestModel, folderRequestModel);
-        restTemplate.delete(UriCommon.FILE_SERVICE_URI, requestModel);
-        restTemplate.delete(UriCommon.FOLDER_SERVICE_URI, folderRequestModel);
-        return new ResponseEntity<>(HttpStatus.OK);
+        HttpEntity<FileRequestModel> fileRequestModelHttpEntity = new HttpEntity<>(requestModel);
+        HttpEntity<FolderRequestModel> folderRequestModelHttpEntity = new HttpEntity<>(folderRequestModel);
+        restTemplate.exchange(URI.create(UriCommon.FILE_SERVICE_URI), HttpMethod.DELETE, fileRequestModelHttpEntity, ResponseModel.class);
+        restTemplate.exchange(URI.create(UriCommon.FOLDER_SERVICE_URI), HttpMethod.DELETE, folderRequestModelHttpEntity, ResponseModel.class);
+        return new ResponseEntity<>(new ResponseModel(), HttpStatus.OK);
     }
 }

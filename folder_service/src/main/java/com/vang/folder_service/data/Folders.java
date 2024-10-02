@@ -30,4 +30,6 @@ public class Folders {
     private String createdDate;
     @Column(name = "lastmodified")
     private String lastModified;
+    @Column(name = "fileintrash")
+    private int fileInTrash;
 }

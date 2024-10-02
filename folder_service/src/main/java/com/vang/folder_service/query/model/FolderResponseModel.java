@@ -16,6 +16,7 @@ public class FolderResponseModel implements Serializable {
     private int status;
     private String createdDate;
     private String lastModified;
+    private int fileInTrash;
 
     public void initialize() {
 
@@ -28,5 +29,6 @@ public class FolderResponseModel implements Serializable {
         this.status = -1;
         this.createdDate = null;
         this.lastModified = null;
+        this.fileInTrash = -1;
     }
 }

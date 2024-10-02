@@ -3,9 +3,9 @@ package com.vang.folder_service.command.event;
 import lombok.Data;
 
 @Data
-public class FolderUpdatedEvent {
+public class FolderUpdatedCountEvent {
 
-    private String aggregateId;
+    private String aggregateId = System.currentTimeMillis()+"";
     private String folderId;
     private String folderName;
     private String folderPath;

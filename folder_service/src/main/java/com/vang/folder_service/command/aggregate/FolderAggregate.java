@@ -2,9 +2,11 @@ package com.vang.folder_service.command.aggregate;
 
 import com.vang.folder_service.command.command.CreateFolderCommand;
 import com.vang.folder_service.command.command.DeleteFolderCommand;
+import com.vang.folder_service.command.command.UpdateCountFolderCommand;
 import com.vang.folder_service.command.command.UpdateFolderCommand;
 import com.vang.folder_service.command.event.FolderCreatedEvent;
 import com.vang.folder_service.command.event.FolderDeletedEvent;
+import com.vang.folder_service.command.event.FolderUpdatedCountEvent;
 import com.vang.folder_service.command.event.FolderUpdatedEvent;
 import com.vang.folder_service.command.model.FolderResponseModel;
 import com.vang.folder_service.command.sharedata.SharedData;
@@ -26,6 +28,7 @@ public class FolderAggregate {
     private String folderName;
     private String folderPath;
     private int fileInFolder;
+    private int fileInTrash;
     private String userId;
     private String userInformation;
     private int status;
@@ -55,6 +58,14 @@ public class FolderAggregate {
     public FolderAggregate(DeleteFolderCommand command) {
 
         FolderDeletedEvent event = new FolderDeletedEvent();
+        BeanUtils.copyProperties(command, event);
+        AggregateLifecycle.apply(event);
+    }
+
+    @CommandHandler
+    public FolderAggregate(UpdateCountFolderCommand command) {
+
+        FolderUpdatedCountEvent event = new FolderUpdatedCountEvent();
         BeanUtils.copyProperties(command, event);
         AggregateLifecycle.apply(event);
     }
@@ -101,5 +112,23 @@ public class FolderAggregate {
         this.aggregateId = event.getAggregateId();
         this.folderId = event.getFolderId();
         this.userId = event.getUserId();
+    }
+
+    @EventSourcingHandler
+    public void handle(FolderUpdatedCountEvent event) {
+
+        this.aggregateId = event.getAggregateId();
+        this.folderId = event.getFolderId();
+        this.folderName = event.getFolderName();
+        this.folderPath = event.getFolderPath();
+        this.fileInFolder = event.getFileInFolder();
+        this.userId = event.getUserId();
+        this.userInformation = event.getUserInformation();
+        this.status = event.getStatus();
+        this.createdDate = event.getCreatedDate();
+        this.lastModified = event.getLastModified();
+        FolderResponseModel responseModel = new FolderResponseModel();
+        BeanUtils.copyProperties(event, responseModel);
+        SharedData.setInstance(responseModel);
     }
 }

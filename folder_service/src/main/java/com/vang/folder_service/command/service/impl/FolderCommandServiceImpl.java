@@ -3,6 +3,7 @@ package com.vang.folder_service.command.service.impl;
 import com.google.gson.Gson;
 import com.vang.folder_service.command.command.CreateFolderCommand;
 import com.vang.folder_service.command.command.DeleteFolderCommand;
+import com.vang.folder_service.command.command.UpdateCountFolderCommand;
 import com.vang.folder_service.command.command.UpdateFolderCommand;
 import com.vang.folder_service.command.model.FolderRequestModel;
 import com.vang.folder_service.command.model.FolderResponseModel;
@@ -134,4 +135,24 @@ public class FolderCommandServiceImpl implements FolderCommandService {
         }
     }
 
+    @Override
+    public ResponseEntity<ResponseModel> updateCount(FolderRequestModel requestModel) {
+
+        UpdateCountFolderCommand command = new UpdateCountFolderCommand();
+        ResponseModel responseModel = new ResponseModel();
+        BeanUtils.copyProperties(requestModel, command);
+
+        String responseCommand = commandGateway.sendAndWait(command);
+
+        if (StringUtils.isEmpty(responseCommand)) {
+
+            responseModel.setSuccess(Boolean.FALSE);
+            return new ResponseEntity<>(responseModel, HttpStatus.BAD_REQUEST);
+        } else {
+
+            responseModel.setSuccess(Boolean.TRUE);
+            responseModel.setMessage(FolderCommon.SUCCESS_DELETE);
+            return new ResponseEntity<>(responseModel, HttpStatus.OK);
+        }
+    }
 }
