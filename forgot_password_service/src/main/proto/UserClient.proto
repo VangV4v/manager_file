@@ -1,0 +1,18 @@
+syntax = "proto3";
+package com.vang;
+option java_package = "com.vang.forgot_password_service.grpc.generated";
+option java_outer_classname = "UserClientGrpc";
+option java_multiple_files = true;
+
+service UpdatePassword {
+  rpc updatePassword(UpdatePasswordRequest) returns (UpdatePasswordReply);
+}
+
+message UpdatePasswordRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message UpdatePasswordReply {
+  bool status = 1;
+}

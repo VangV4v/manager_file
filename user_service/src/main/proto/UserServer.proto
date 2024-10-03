@@ -12,6 +12,10 @@ service GetUserInfoByUsername {
   rpc getUserInfoByUsername(GetUserInfoByUsernameRequest) returns (GetUserInfoByUsernameResponse);
 }
 
+service UpdatePassword {
+  rpc updatePassword(UpdatePasswordRequest) returns (UpdatePasswordReply);
+}
+
 message AuthenticateUserRequest {
   string username = 1;
 }
@@ -28,4 +32,13 @@ message GetUserInfoByUsernameRequest {
 message GetUserInfoByUsernameResponse {
   bool status = 1;
   string userResponse = 2;
+}
+
+message UpdatePasswordRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message UpdatePasswordReply {
+  bool status = 1;
 }

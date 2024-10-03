@@ -41,3 +41,8 @@ spring:
             uri: http://192.168.160.1:9006
             predicates:
               - Path=/api/v1/trash/**
+          #Folder Service
+          - id: forgot-password-service
+            uri: http://192.168.160.1:9007
+            predicates:
+              - Path=/api/v1/forgot-password/**

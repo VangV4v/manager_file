@@ -20,6 +20,7 @@ public class NotificationCommon {
         public static final String EMAIL_VAR = "email";
         public static final String FULL_NAME_VAR = "fullName";
         public static final String TEMPLATE_REGISTER = "register_template";
+        public static final String TEMPLATE_FORGOT_PASSWORD = "forgot_password_template";
         public static final String UTF8 = "UTF-8";
     }
 }
